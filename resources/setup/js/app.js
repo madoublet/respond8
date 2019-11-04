@@ -264,8 +264,6 @@ var app = {
         // setup build button
         createButton.addEventListener('click', function(e) {
 
-            alert('create');
-
             // set data
             let data = {
                 html: app.buildHTML(),
@@ -275,22 +273,16 @@ var app = {
                 editorHTML: app.getEditorHTML()
             };
 
-            alert('data');
-            console.log(data);
-
             // get elements
             let preview = document.querySelector('#preview-your-site'),
                 editSite = document.querySelector('#edit-site'),
                 loading = document.querySelector('#create-button-loading');
 
 
-
             // show loading
             loading.setAttribute('active', '');
             createButton.setAttribute('disabled', '');
             createButton.innerHTML = 'Creating site...';
-
-            alert('post');
 
             // post form
             var xhr = new XMLHttpRequest();
@@ -303,10 +295,9 @@ var app = {
                     console.log(`[debug] ${xhr.responseText}`);
                     loading.removeAttribute('active');
                     createButton.removeAttribute('disabled');
-                    createButton.querySelector('span').innerHTML = 'Create your Site';
+                    createButton.innerHTML = 'Create your Site';
 
                     // set next steps
-                    let data = JSON.parse(xhr.responseText);
                     getStartedModal.setAttribute('active', '');
                     preview.setAttribute('href', `/index.html`);
                     editSite.setAttribute('href', `/edit/index.html`);
@@ -315,7 +306,7 @@ var app = {
                     site.toast.show('failure', 'There was a problem creating your site.', true);
                     loading.removeAttribute('active');
                     createButton.removeAttribute('disabled');
-                    createButton.querySelector('span').innerHTML = 'Create your Site';
+                    createButton.innerHTML = 'Create your Site';
                 }
             };
 

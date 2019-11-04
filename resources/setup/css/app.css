@@ -9,8 +9,8 @@ body {
 }
 
 /* headline */
-body h1{
-    font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+body h1 {
+    font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
     color: #111;
     font-size: 2.75em;
 }
@@ -18,6 +18,10 @@ body h1{
 /* text */
 body p {
     color: #333;
+}
+
+body * {
+    font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* main */
@@ -57,6 +61,7 @@ section.builder-top p {
     color: #555;
     margin: 0 auto 15px auto;
     max-width: 700px;
+    font-family: "Open Sans";
 }
 
 /* top */
@@ -794,10 +799,10 @@ body .site-toast {
     display: inline-block;
     border: 1px solid #24344C;
     background: #24344C;
-    height: 35px;
-    line-height: 35px;
-    margin: 7px 0 0 10px;
-    padding: 0 40px 0 25px;
+    height: 45px;
+    line-height: 45px;
+    margin: 10px 0 0 0;
+    padding: 0 25px 0 25px;
     cursor: pointer;
     color: #fff;
     text-decoration: none;
@@ -815,13 +820,12 @@ body .site-toast {
     display: none;
 }
 
-.app-modal a.create-button .loading-icon {
-    position: absolute;
-    top: 12px;
-    height: 25px;
+.app-modal .loading-icon {
+    vertical-align: middle;
+    transform: scale(0.6);
     visibility: hidden;
 }
 
-.app-modal a.create-button .loading-icon[active] {
+.app-modal .loading-icon[active] {
     visibility: visible;
 }

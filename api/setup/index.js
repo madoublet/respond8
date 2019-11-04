@@ -1,14 +1,13 @@
 const express = require('express'),
     router = express.Router(),
-    fs = require('fs').promises,
+    fs = require('fs'),
+    fsp = require('fs').promises,
     fse = require('fs-extra'),
     path = require('path'),
     common = require('../common.js')
 
 /**
   * /api/setup
-  * const file = await fs.readFile('filename.txt', 'utf8')
-  * await fs.writeFile('filename.txt', 'test')
   * @param {Object} req - http://expressjs.com/api.html#req
   * @param {Object} res - http://expressjs.com/api.html#res
   * @param {Object} next - required for middleware
@@ -42,12 +41,12 @@ router.post('/', async (req, res) => {
             fse.ensureDirSync(`${global.appRoot}/site/css/`)
 
             // copy css
-            fse.copySync(`${global.appRoot}/resources/select/css`, `${global.appRoot}/site/css`)
+            fse.copySync(`${global.appRoot}/resources/site/css`, `${global.appRoot}/site/css`)
 
             // write builder.json
             file = `${global.appRoot}/site/data/builder.json`
             console.log(`[app] writing ${file}`)
-            await fs.writeFile(file, JSON.stringify({
+            await fsp.writeFile(file, JSON.stringify({
                                             'json': json,
                                             'variables': variables,
                                             'html': html,
@@ -57,12 +56,12 @@ router.post('/', async (req, res) => {
             // write index.html
             file = `${global.appRoot}/site/index.html`
             console.log(`[app] writing ${file}`)
-            await fs.writeFile(file, html)
+            await fsp.writeFile(file, html)
 
             // create about
             source = `${global.appRoot}/resources/site/placeholder/about.html`
             file = `${global.appRoot}/site/about.html`
-            content = await fs.readFile('source', 'utf8')
+            content = await fsp.readFile(source, 'utf8')
 
             page = template
             page = common.replaceAll(page, '{{page.title}}', 'About');
@@ -76,12 +75,12 @@ router.post('/', async (req, res) => {
 
             // write about
             console.log(`[app] writing ${file}`)
-            await fs.writeFile(file, page)
+            await fsp.writeFile(file, page)
 
             // create gallery
             source = `${global.appRoot}/resources/site/placeholder/gallery.html`
             file = `${global.appRoot}/site/gallery.html`
-            content = await fs.readFile('source', 'utf8')
+            content = await fsp.readFile(source, 'utf8')
 
             page = template
             page = common.replaceAll(page, '{{page.title}}', 'Gallery');
@@ -95,12 +94,12 @@ router.post('/', async (req, res) => {
 
             // write gallery
             console.log(`[app] writing ${file}`)
-            await fs.writeFile(file, page)
+            await fsp.writeFile(file, page)
 
             // write default.html
             file = `${global.appRoot}/site/templates/default.html`
             console.log(`[app] writing ${file}`)
-            await fs.writeFile(file, template)
+            await fsp.writeFile(file, template)
 
             res.status(200).send('Site created successfully')
 
