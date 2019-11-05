@@ -55,9 +55,9 @@ app.post('/login',
 
 // setup public ui routes
 app.use('/', express.static('site'))
-app.use('/setup', express.static('app/setup'))
-app.use('/select', express.static('app/select'))
-app.use('/login', express.static('app/login'))
+app.use('/setup', express.static('views/setup'))
+app.use('/select', express.static('views/select'))
+app.use('/login', express.static('views/login'))
 app.use('/resources', express.static('resources'))
 
 // authenticate 
@@ -73,7 +73,7 @@ var auth = function (req, res, next) {
 app.get('/edit', 
     auth,
     function(req, res) {
-        res.sendFile(path.join(__dirname + '/app/edit/index.html'));
+        res.sendFile(path.join(__dirname + '/views/edit/index.html'));
     })
 
 // setup api routes
