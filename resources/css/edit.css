@@ -24,7 +24,7 @@ body iframe {
 }
 
 body iframe[mobile] {
-    max-width: 525px;
+    max-width: 500px;
 }
 
 /* menu */

@@ -1,6 +1,7 @@
 const express = require('express'),
     session = require("express-session"),
     setup = require('./api/setup'),
+    edit = require('./api/edit'),
     app = express(),
     port = 3000,
     path = require('path'),
@@ -73,12 +74,13 @@ var auth = function (req, res, next) {
 app.get('/edit', 
     auth,
     function(req, res) {
-        res.sendFile(path.join(__dirname + '/views/edit/index.html'));
+        res.sendFile(path.join(__dirname + '/views/edit/index.html'))
     })
 
 // setup api routes
-app.use(express.json());
-app.use('/api/setup', setup);
+app.use(express.json())
+app.use('/api/setup', setup)
+app.use('/api/edit', edit)
 
 app.get('/', (req, res) => res.send(`<html>
     <head><title>Welcome to Respond</title></head>

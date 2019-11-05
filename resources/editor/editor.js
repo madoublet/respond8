@@ -2474,6 +2474,8 @@ editor = (function() {
 
       window.addEventListener('message', function(event) {
 
+        console.log('editor.message', message);
+
         if(event.data.command) {
 
           if(event.data.command == 'save') {
