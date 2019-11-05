@@ -1,4 +1,4 @@
-// ref: https://raw.githubusercontent.com/madoublet/prebuilt-cart-expressjs/master/api/common.js?token=AAMMOPEKL7KQWW7MHU64WCC5XXU5C
+const fs = require('fs')
 
 /**
   * Common application functions
@@ -27,6 +27,28 @@ module.exports = {
      */
     replaceAll: function(str, search, replacement) {
         return str.replace(new RegExp(search, 'g'), replacement);
+    },
+    
+
+    /**
+     * Creates a unique id
+     * @param {String} length - the length of the id to make
+     */
+    findUser: function(email) {
+
+      try{
+        let json = fs.readFileSync(`${global.appRoot}/data/site.json`, 'utf8'),
+            obj = JSON.parse(json)
+
+        for(let x=0; x<obj.users.length; x++) {
+          if(obj.users[x].email == email) return obj.users[x]
+        }
+
+      }
+      catch(e) {
+        return null
+      }
+
     }
     
 };

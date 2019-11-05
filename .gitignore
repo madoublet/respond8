@@ -1,5 +1,7 @@
 /site/
 /site/*
+/data/
+/data/*
 node_modules/
 node_modules/*
 package-lock.json

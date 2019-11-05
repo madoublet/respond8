@@ -7,7 +7,7 @@
     <!-- meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="Read about who we are and what we do on the about page.">
+    <meta name="description" content="Respond site builder">
     <meta name="keywords" content="">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
@@ -21,7 +21,7 @@
 
     <!-- css -->
     <link type="text/css" href="/resources/site/css/site.all.css" rel="stylesheet">
-    <link type="text/css" href="/resources/setup/css/app.css" rel="stylesheet">
+    <link type="text/css" href="/setup/setup.css" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap" rel="stylesheet">
 </head>
@@ -433,7 +433,7 @@
                     <div>
                         <h2>Get Started</h2>
                         <p class="app-get-started-desc">Hooray! You have successfully created your site. Tap below to get started.</p>
-                        <p><a id="preview-your-site" href="#" target="_blank">Preview your Site <small>Opens in a new Window</small></a></p>
+                        <p><a id="preview-your-site" href="#" target="_blank">Preview your Site</a></p>
                         <p><a id="edit-site" href="#">Start updating your site</a></p>
                         <a id="app-get-started-close" class="app-modal-close">
                             <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><g><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></g></svg>
@@ -452,15 +452,15 @@
                     
                     <span class="app-modal-form-group">
                         <label>Email</label>
-                        <input type="email" required>
+                        <input id="email" type="email" required>
                     </span>
 
                     <span class="app-modal-form-group">
                         <label>Password</label>
-                        <input type="password" required>
+                        <input id="password" type="password" required>
                     </span>
 
-                    <p><a id="create-button" class="create-button" href="#">Create your Site</a>
+                    <p><a id="create-button" class="create-button">Create your Site</a>
                         <svg id="create-button-loading" class="loading-icon" width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#24344C">
                             <g fill="none" fill-rule="evenodd">
                                 <g transform="translate(1 1)" stroke-width="2">
@@ -485,7 +485,7 @@
 
 </body>
 
-<script src="/resources/setup/js/app.js"></script>
+<script src="/setup/setup.js"></script>
 
 
 </html>

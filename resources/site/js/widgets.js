@@ -3,8 +3,8 @@ var site = site || {};
 // load editor / built-in libraries
 if(window.location.href.indexOf('?edit=true') != -1) {
   document.write('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">');
-  document.write('<link rel="stylesheet" href="https://s3.amazonaws.com/resources.fixture.app/editor/editor.css">');
-  document.write('<script src="https://s3.amazonaws.com/resources.fixture.app/editor/editor.js"></script>');
+  document.write('<link rel="stylesheet" href="/resources/editor/editor.css">');
+  document.write('<script src="/resources/editor/editor.js"></script>');
   document.write('<script>editor.setup( {sortable: ".col", blocks: ".grid" });</script>')
 }
 else {

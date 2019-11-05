@@ -264,8 +264,13 @@ var app = {
         // setup build button
         createButton.addEventListener('click', function(e) {
 
+            let email = document.querySelector('#email').value,
+                password = document.querySelector('#password').value
+
             // set data
             let data = {
+                email: email,
+                password: password,
                 html: app.buildHTML(),
                 template: app.buildTemplate(),
                 variables: app.buildVariables(),
@@ -298,9 +303,10 @@ var app = {
                     createButton.innerHTML = 'Create your Site';
 
                     // set next steps
+                    setupModal.removeAttribute('active');
                     getStartedModal.setAttribute('active', '');
                     preview.setAttribute('href', `/index.html`);
-                    editSite.setAttribute('href', `/edit/index.html`);
+                    editSite.setAttribute('href', `/edit/index.html?page=/index.html`);
                 }
                 else {
                     site.toast.show('failure', 'There was a problem creating your site.', true);
@@ -384,8 +390,6 @@ var app = {
             footerTextColor = document.querySelector('#footer-text-color').value;
 
         return `{
-    "id": "tbd",
-    "theme": "default",
     "customizations": [
         {
             "name": "",
@@ -631,8 +635,8 @@ var app = {
         <meta property="og:image" content="">
     
         <!-- icons -->
-        <link site-icon="" href="https://s3.amazonaws.com/resources.fixture.app/media/icon.png" rel="icon">
-        <link site-icon="" href="https://s3.amazonaws.com/resources.fixture.app/media/icon.png" rel="apple-touch-icon">
+        <link site-icon="" href="files/icon.png" rel="icon">
+        <link site-icon="" href="files/icon.png" rel="apple-touch-icon">
 
     
         <!-- css -->
@@ -692,8 +696,8 @@ var app = {
         <meta property="og:image" content="{{page.image}}">
 
         <!-- icons -->
-        <link site-icon="" href="https://s3.amazonaws.com/resources.fixture.app/media/icon.png" rel="icon">
-        <link site-icon="" href="https://s3.amazonaws.com/resources.fixture.app/media/icon.png" rel="apple-touch-icon">
+        <link site-icon="" href="files/icon.png" rel="icon">
+        <link site-icon="" href="files/icon.png" rel="apple-touch-icon">
 
         <!-- css -->
         <link type="text/css" href="css/site.all.css?v={{version}}" rel="stylesheet">

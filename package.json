@@ -10,9 +10,14 @@
   "author": "Matthew Smith",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "fs-extra": "^8.1.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "uglifycss": "0.0.29"
   },
   "devDependencies": {
     "gulp": "^4.0.2",

@@ -3,7 +3,9 @@ const express = require('express'),
     fs = require('fs'),
     fsp = require('fs').promises,
     fse = require('fs-extra'),
+    bcrypt = require('bcrypt'),
     path = require('path'),
+    uglifycss = require('uglifycss'),
     common = require('../common.js')
 
 /**
@@ -15,6 +17,8 @@ const express = require('express'),
 router.post('/', async (req, res) => {
 
     let body = req.body,
+        email = body.email,
+        password = body.password,
         html = body.html,
         template = body.template,
         variables = body.variables,
@@ -23,7 +27,10 @@ router.post('/', async (req, res) => {
         file = '',
         source = '',
         content = '',
-        page = ''
+        page = '',
+        files = [],
+        hash = '',
+        site = {}
 
     // check to see if a site already exists before builiding a new site
     if (fs.existsSync(`${global.appRoot}/index.html`)) {
@@ -34,14 +41,54 @@ router.post('/', async (req, res) => {
         // create the site    
         try {
 
+            // create hash
+            hash = await bcrypt.hash(password, 10)
+
+            // create users for site
+            site.users = []
+            site.users.push({
+                email: email,
+                password: hash
+            })
+
             // setup directories
+            fse.ensureDirSync(`${global.appRoot}/data/`)
             fse.ensureDirSync(`${global.appRoot}/site/`)
             fse.ensureDirSync(`${global.appRoot}/site/data/`)
             fse.ensureDirSync(`${global.appRoot}/site/templates/`)
             fse.ensureDirSync(`${global.appRoot}/site/css/`)
+            fse.ensureDirSync(`${global.appRoot}/site/js/`)
 
             // copy css
             fse.copySync(`${global.appRoot}/resources/site/css`, `${global.appRoot}/site/css`)
+            fse.copySync(`${global.appRoot}/resources/site/js`, `${global.appRoot}/site/js`)
+
+            // write variables
+            file = `${global.appRoot}/site/css/variables.css`
+            console.log(`[app] writing ${file}`)
+            await fsp.writeFile(file, variables)
+
+            files = await fsp.readdir(`${global.appRoot}/site/css/`)
+            content = ''
+
+            // combine css files
+            for(let x=0; x<files.length; x++) {
+                console.log(`[app] reading ${global.appRoot}/site/css/${files[x]}`);
+                let css = await fsp.readFile(`${global.appRoot}/site/css/${files[x]}`, 'utf8')
+                content += css
+            }
+
+            console.log('[content]' + content)
+
+            // write site.all.css
+            file = `${global.appRoot}/site/css/site.all.css`
+            console.log(`[app] writing ${file}`)
+            await fsp.writeFile(file, uglifycss.processString(content, { maxLineLen: 500, expandVars: false }))
+
+            // write local site.json
+            file = `${global.appRoot}/data/site.json`
+            console.log(`[app] writing ${file}`)
+            await fsp.writeFile(file, JSON.stringify(site))
 
             // write builder.json
             file = `${global.appRoot}/site/data/builder.json`
