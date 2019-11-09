@@ -1,3 +1,28 @@
+let editor = {}
+
+editor.sendCommand = function(command) {
+    document.querySelector('#edit-frame').contentWindow.postMessage({
+        'command': 'command',
+        'text': command
+    }, '*');
+}
+
+editor.sendUpdate = function(obj) {
+    document.querySelector('#edit-frame').contentWindow.postMessage({
+        'command': 'update',
+        'obj': obj
+      }, '*');
+}
+
+editor.sendAdd = function(obj) {
+    document.querySelector('#edit-frame').contentWindow.postMessage({
+        'command': 'add',
+        'html': obj.html,
+        'isLayout': obj.isLayout,
+        'insertAfter': obj.insertAfter
+      }, '*');
+}
+
 /*
  * Model for the Edit page
  */
@@ -9,7 +34,8 @@ class Edit {
     viewMobile = document.querySelector('#view-mobile')
     viewSettings = document.querySelector('#view-settings')
     publish = document.querySelector('#publish')
-
+    modalSelectBlock = document.querySelector('#modal-select-block')
+    
     /*
      * Initializes the model
      */
@@ -23,6 +49,7 @@ class Edit {
         }
 
         this.setupEvents()
+        this.setupFrameListener()
     }
 
     /*
@@ -34,11 +61,6 @@ class Edit {
 
         this.viewPage.setAttribute('href', this.page)
         this.viewPage.setAttribute('target', '_blank')
-
-        // listen for messages
-        window.addEventListener('message', message => {
-           console.log('received', message)
-        })
 
         // view mobile
         this.viewMobile.addEventListener('click', function(e) {
@@ -58,6 +80,47 @@ class Edit {
         this.publish.addEventListener('click', function(e) {
             context.frame.contentWindow.postMessage({'command': 'save'}, '*'); 
         })
+    }
+
+    /*
+     * Setup frame listener
+     */
+    setupFrameListener() {
+        window.addEventListener('message', message => {
+            if(message.data) {
+                if(message.data.command == 'save') {
+                    this.save(message.data.data)
+                }
+            }
+         })
+    }
+
+    /*
+     * Save HTML
+     */
+    save(html) {
+
+        // set data
+        let data = {
+            html: html,
+            page: this.page
+        };
+
+        // post form
+        var xhr = new XMLHttpRequest()
+        xhr.open('POST', '/api/page/save', true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.send(JSON.stringify(data))
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                alert('save succcessful')
+                location.reload()
+            }
+            else {
+                alert('save error')
+            }
+        };
     }
 }
 

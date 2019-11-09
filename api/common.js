@@ -29,10 +29,9 @@ module.exports = {
         return str.replace(new RegExp(search, 'g'), replacement);
     },
     
-
     /**
-     * Creates a unique id
-     * @param {String} length - the length of the id to make
+     * Finds a user
+     * @param {String} email
      */
     findUser: function(email) {
 

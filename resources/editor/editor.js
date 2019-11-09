@@ -2474,7 +2474,7 @@ editor = (function() {
 
       window.addEventListener('message', function(event) {
 
-        console.log('editor.message', message);
+        console.log('editor.message', event);
 
         if(event.data.command) {
 

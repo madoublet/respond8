@@ -306,7 +306,7 @@ var app = {
                     setupModal.removeAttribute('active');
                     getStartedModal.setAttribute('active', '');
                     preview.setAttribute('href', `/index.html`);
-                    editSite.setAttribute('href', `/edit/index.html?page=/index.html`);
+                    editSite.setAttribute('href', `/edit?page=/index.html`);
                 }
                 else {
                     site.toast.show('failure', 'There was a problem creating your site.', true);

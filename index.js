@@ -1,7 +1,7 @@
 const express = require('express'),
     session = require("express-session"),
     setup = require('./api/setup'),
-    edit = require('./api/edit'),
+    page = require('./api/page'),
     app = express(),
     port = 3000,
     path = require('path'),
@@ -80,7 +80,7 @@ app.get('/edit',
 // setup api routes
 app.use(express.json())
 app.use('/api/setup', setup)
-app.use('/api/edit', edit)
+app.use('/api/page', page)
 
 app.get('/', (req, res) => res.send(`<html>
     <head><title>Welcome to Respond</title></head>
