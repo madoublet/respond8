@@ -28,18 +28,19 @@ editor.sendAdd = function(obj) {
  */
 class Edit {
 
-    frame = document.querySelector('#edit-frame')
-    page = '/index.html'
-    viewPage = document.querySelector('#view-page')
-    viewMobile = document.querySelector('#view-mobile')
-    viewSettings = document.querySelector('#view-settings')
-    publish = document.querySelector('#publish')
-    modalSelectBlock = document.querySelector('#modal-select-block')
-    
     /*
      * Initializes the model
      */
     constructor() {
+
+        this.frame = document.querySelector('#edit-frame')
+        this. page = '/index.html'
+        this.viewPage = document.querySelector('#view-page')
+        this.viewMobile = document.querySelector('#view-mobile')
+        this.viewSettings = document.querySelector('#view-settings')
+        this.publish = document.querySelector('#publish')
+        this.modalSelectBlock = document.querySelector('#modal-select-block')
+
         const params = new URLSearchParams(window.location.search)
         
         this.page = params.get('page') || '/index.html'

@@ -3,17 +3,18 @@
  */
 class SelectLayout {
 
-    version = 2
-    buttonAddLayout = document.querySelector('#button-add-layout')
-    modalSelectLayout = document.querySelector('#modal-select-layout')
-    modalSelectLayoutFrame = document.querySelector('#modal-select-layout-frame')
-    modalSelectLayoutClose = document.querySelector('#modal-select-layout-close')
-    selectLayoutUrl = '/select/index.html'
-
     /*
      * Initializes the model
      */
     constructor() {
+
+        this.version = 2
+        this.buttonAddLayout = document.querySelector('#button-add-layout')
+        this.modalSelectLayout = document.querySelector('#modal-select-layout')
+        this.modalSelectLayoutFrame = document.querySelector('#modal-select-layout-frame')
+        this.modalSelectLayoutClose = document.querySelector('#modal-select-layout-close')
+        this.selectLayoutUrl = '/select/index.html'
+
         this.setupEvents()
         this.setupFrameListener()
     }

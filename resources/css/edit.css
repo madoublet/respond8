@@ -73,6 +73,16 @@ body header .primary-menu {
     left: 5px;
 }
 
+body header .primary-menu a {
+    background: url(/resources/respond-logo-standalone-gray.svg) no-repeat 10px 12px;
+    background-size: 15px;
+}
+
+body header .primary-menu a:hover {
+    background: #fff url(/resources/respond-logo-standalone.svg) no-repeat 10px 12px;
+    background-size: 15px;
+}
+
 body header .secondary-menu {
     position: absolute;
     top: 10px;

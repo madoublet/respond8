@@ -62,6 +62,7 @@ router.post('/', async (req, res) => {
             // copy css
             fse.copySync(`${global.appRoot}/resources/site/css`, `${global.appRoot}/site/css`)
             fse.copySync(`${global.appRoot}/resources/site/js`, `${global.appRoot}/site/js`)
+            fse.copySync(`${global.appRoot}/resources/site/data`, `${global.appRoot}/site/data`)
 
             // write variables
             file = `${global.appRoot}/site/css/variables.css`
