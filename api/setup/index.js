@@ -47,6 +47,8 @@ router.post('/', async (req, res) => {
             // create users for site
             site.users = []
             site.users.push({
+                firstName: 'Default',
+                lastName: 'User',
                 email: email,
                 password: hash
             })
@@ -56,10 +58,12 @@ router.post('/', async (req, res) => {
             fse.ensureDirSync(`${global.appRoot}/site/`)
             fse.ensureDirSync(`${global.appRoot}/site/data/`)
             fse.ensureDirSync(`${global.appRoot}/site/templates/`)
+            fse.ensureDirSync(`${global.appRoot}/site/layouts/`)
             fse.ensureDirSync(`${global.appRoot}/site/css/`)
             fse.ensureDirSync(`${global.appRoot}/site/js/`)
 
-            // copy css
+            // copy layouts, css, js, data
+            fse.copySync(`${global.appRoot}/resources/site/layouts`, `${global.appRoot}/site/layouts`)
             fse.copySync(`${global.appRoot}/resources/site/css`, `${global.appRoot}/site/css`)
             fse.copySync(`${global.appRoot}/resources/site/js`, `${global.appRoot}/site/js`)
             fse.copySync(`${global.appRoot}/resources/site/data`, `${global.appRoot}/site/data`)

@@ -84,7 +84,7 @@
 .app-slide-in-modal-list-item {
     position: relative;
     border-bottom: 1px solid #f0f0f0;
-    padding: 15px 15px;
+    padding: 0;
     cursor: pointer;
 }
 
@@ -97,6 +97,7 @@
 }
 
 .app-slide-in-modal-list-item>a {
+    padding: 15px;
     display: block;
     text-decoration: none;
 }

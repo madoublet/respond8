@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" href="/resources/css/edit.css" rel="stylesheet">
+    <link type="text/css" href="/resources/css/modal.css" rel="stylesheet">
     <link type="text/css" href="/resources/css/slide-in-modal.css" rel="stylesheet">
 </head>
 
@@ -40,55 +41,9 @@
         <iframe id="edit-frame"></iframe>
     </main>
 
-    <div id="modal-select-layout" class="app-fullscreen-modal">
-        <button id="modal-select-layout-close" class="app-fullscreen-modal-close"><img src="https://s3.amazonaws.com/resources.fixture.app/builder/resources/close.svg"></button>
-        <iframe id="modal-select-layout-frame" class="app-fullscreen-modal-frame"></iframe>
-    </div>
-
     <button id="button-add-layout" class="circle-button">
         <i class="material-icons">add</i>
     </button>
-
-    <section id="content-slide-in-modal" class="app-slide-in-modal">
-        <div>
-            <div class="app-slide-in-modal-header">
-                <input type="search" placeholder="Search for page">
-                <button class="add-button">
-                    <i class="material-icons">add</i>
-                </button>
-            </div>
-            <!-- /app-slide-in-modal-header -->
-
-            <div class="app-slide-in-modal-list">
-                <div class="app-slide-in-modal-list-item">
-                    <a href="/edit?page=/index.html">
-                        <h3>Home</h3>
-                        <p>index.html</p>
-                        <i class="material-icons">arrow_forward</i>
-                    </a>
-                </div>
-                <!-- /app-slide-in-modal-list-item -->
-                <div class="app-slide-in-modal-list-item">
-                    <a href="/edit?page=/about.html">
-                        <h3>About</h3>
-                        <p>about.html</p>
-                        <i class="material-icons">arrow_forward</i>
-                    </a>
-                </div>
-                <!-- /app-slide-in-modal-list-item -->
-                <div class="app-slide-in-modal-list-item">
-                    <a href="/edit?page=/gallery.html">
-                        <h3>Gallery</h3>
-                        <p>gallery.html</p>
-                        <i class="material-icons">arrow_forward</i>
-                    </a>
-                </div>
-                <!-- /app-slide-in-modal-list-item -->
-            </div>
-            <!-- /app-slide-in-modal-list -->
-        </div>
-    </section>
-    <!-- /.pages-->
 
     <footer>
         <button id="publish">Publish</button>
@@ -96,9 +51,12 @@
 
 </body>
 
+<script src="/resources/js/app.js"></script>
 <script src="/resources/js/edit.js"></script>
 <script src="/resources/js/content-slider.js"></script>
 <script src="/resources/js/select-layout.js"></script>
+<script src="/resources/js/add-page.js"></script>
+<script src="/resources/js/edit-element.js"></script>
 
 
 </html>

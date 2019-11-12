@@ -1,28 +1,3 @@
-let editor = {}
-
-editor.sendCommand = function(command) {
-    document.querySelector('#edit-frame').contentWindow.postMessage({
-        'command': 'command',
-        'text': command
-    }, '*');
-}
-
-editor.sendUpdate = function(obj) {
-    document.querySelector('#edit-frame').contentWindow.postMessage({
-        'command': 'update',
-        'obj': obj
-      }, '*');
-}
-
-editor.sendAdd = function(obj) {
-    document.querySelector('#edit-frame').contentWindow.postMessage({
-        'command': 'add',
-        'html': obj.html,
-        'isLayout': obj.isLayout,
-        'insertAfter': obj.insertAfter
-      }, '*');
-}
-
 /*
  * Model for the Edit page
  */
@@ -88,9 +63,17 @@ class Edit {
      */
     setupFrameListener() {
         window.addEventListener('message', message => {
+
+            console.log(message)
+
             if(message.data) {
                 if(message.data.command == 'save') {
                     this.save(message.data.data)
+                }
+
+                // dispatch show event
+                if(message.data.command == 'show') {
+                    window.dispatchEvent(new CustomEvent('editor.show', {detail: message.data}))
                 }
             }
          })
@@ -105,7 +88,7 @@ class Edit {
         let data = {
             html: html,
             page: this.page
-        };
+        }
 
         // post form
         var xhr = new XMLHttpRequest()
@@ -115,13 +98,13 @@ class Edit {
 
         xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 400) {
-                alert('save succcessful')
+                app.toast.show('success', 'Saved!', true)
                 location.reload()
             }
             else {
-                alert('save error')
+                app.toast.show('failure', 'There was an error saving the file', true)
             }
-        };
+        }
     }
 }
 
