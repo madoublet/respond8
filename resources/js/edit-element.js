@@ -84,7 +84,7 @@ class EditElementModal {
 
         window.addEventListener('editor.show', data => {
 
-          console.log(data.detail)
+          console.log('[edit.element] detail', data.detail)
 
           if(data.detail.type == 'element') {
 

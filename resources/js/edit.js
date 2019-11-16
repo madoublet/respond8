@@ -75,6 +75,9 @@ class Edit {
                 if(message.data.command == 'show') {
                     window.dispatchEvent(new CustomEvent('editor.show', {detail: message.data}))
                 }
+                else if(message.data.type && message.data.properties) {
+                    window.dispatchEvent(new CustomEvent('editor.event', {detail: message.data}))
+                }
             }
          })
     }
