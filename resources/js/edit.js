@@ -70,9 +70,10 @@ class Edit {
                 if(message.data.command == 'save') {
                     this.save(message.data.data)
                 }
-
-                // dispatch show event
-                if(message.data.command == 'show') {
+                else if(message.data.command == 'editor-loaded') {
+                    this.frame.setAttribute('active', '')
+                }
+                else if(message.data.command == 'show') {
                     window.dispatchEvent(new CustomEvent('editor.show', {detail: message.data}))
                 }
                 else if(message.data.type && message.data.properties) {

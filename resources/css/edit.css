@@ -10,7 +10,7 @@ body * {
     font-family: "Open Sans", sans-serif;
 }
 
-body iframe {
+body iframe#edit-frame {
     position: relative;
     display: block;
     margin: 60px auto 0 auto;
@@ -20,7 +20,12 @@ body iframe {
     box-shadow: 0 0 25px #bbb;
     max-width: 1024px;
     z-index: 1;
-    transition: all 0.1s ease;
+    transition: all 0.25s ease;
+    display: none;
+}
+
+body iframe#edit-frame[active] {
+    display: block;
 }
 
 body iframe[mobile] {

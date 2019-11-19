@@ -2,6 +2,7 @@ const express = require('express'),
     session = require("express-session"),
     setup = require('./api/setup'),
     page = require('./api/page'),
+    image = require('./api/image'),
     app = express(),
     port = 3000,
     path = require('path'),
@@ -78,9 +79,12 @@ app.get('/edit',
     })
 
 // setup api routes
-app.use(express.json())
+app.use(express.json({limit: '50mb'}))
+
+
 app.use('/api/setup', setup)
 app.use('/api/page', page)
+app.use('/api/image', image)
 
 app.get('/', (req, res) => res.send(`<html>
     <head><title>Welcome to Respond</title></head>

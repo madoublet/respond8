@@ -61,6 +61,7 @@ router.post('/', async (req, res) => {
             fse.ensureDirSync(`${global.appRoot}/site/layouts/`)
             fse.ensureDirSync(`${global.appRoot}/site/css/`)
             fse.ensureDirSync(`${global.appRoot}/site/js/`)
+            fse.ensureDirSync(`${global.appRoot}/site/images/`)
 
             // copy layouts, css, js, data
             fse.copySync(`${global.appRoot}/resources/site/layouts`, `${global.appRoot}/site/layouts`)

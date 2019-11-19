@@ -1,5 +1,5 @@
 /*
- * Models the edit element modal
+ * Models the edit link modal
  */
 class EditLinkModal {
 
@@ -101,7 +101,7 @@ class EditLinkModal {
 
         // handle select page
         this.modal.querySelector('#edit-link-select-page').addEventListener('click', function(e) {
-          window.dispatchEvent(new CustomEvent('app.selectLink', {detail: {target: '#edit-link-href'}}))
+          window.dispatchEvent(new CustomEvent('app.selectPage', {detail: {target: '#edit-link-href'}}))
         })
 
         // listen for the editor event to show modal
