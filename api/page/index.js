@@ -86,6 +86,40 @@ router.post('/save', async (req, res) => {
 })
 
 /**
+  * /api/page/elements.list
+  * @param {Object} req - http://expressjs.com/api.html#req
+  * @param {Object} res - http://expressjs.com/api.html#res
+  * @param {Object} next - required for middleware
+  */
+ router.get('/elements/list', async (req, res) => {
+
+    // auth
+    if(!req.user) {
+        res.status(400).send('Not authenticated')
+        return
+    }
+
+    let body = req.body
+
+    console.log('[debug] list elemenets', req.body)
+
+    try {
+
+        // get json
+        let json = fs.readFileSync(`${global.appRoot}/site/data/elements.json`, 'utf8')
+        
+        // send 200       
+        res.setHeader('Content-Type', 'application/json')
+        res.status(200).send(json)
+
+    }
+    catch(e) {
+        res.status(400).send('There was an error saving the page')
+    }
+
+})
+
+/**
   * /api/page/add
   * @param {Object} req - http://expressjs.com/api.html#req
   * @param {Object} res - http://expressjs.com/api.html#res

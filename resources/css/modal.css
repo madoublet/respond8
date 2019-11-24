@@ -204,6 +204,12 @@
       margin: 10px 0 0 0;
   }
 
+  .app-modal-image-select img {
+    display: inline-block;
+    max-height: 25px;
+    margin-top: 5px;
+}
+
   .app-modal-image-select span {
     display: block;
     font-size: 12px;
