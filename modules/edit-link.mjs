@@ -1,7 +1,7 @@
 /*
  * Models the edit link modal
  */
-class EditLinkModal {
+export class EditLinkModal {
 
     /*
      * Initializes the model
@@ -151,10 +151,8 @@ class EditLinkModal {
       this.properties.title = document.querySelector('#edit-link-title').value
       this.properties.target = document.querySelector('#edit-link-target').value
 
-      app.sendUpdate({type: 'link', properties: this.properties})
+      shared.sendUpdate({type: 'link', properties: this.properties})
 
       this.toggleModal()
     }
 }
-
-let editLinkModal = new EditLinkModal()

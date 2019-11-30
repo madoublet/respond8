@@ -1,23 +1,23 @@
-let app = {}
+var shared = {}
 
 /*
-  * Sends commands to the editor
-  */
-app.sendCommand = function(command) {
+ * Sends commands to the editor
+ */
+shared.sendCommand = function(command) {
     document.querySelector('#edit-frame').contentWindow.postMessage({
         'command': 'command',
         'text': command
     }, '*')
 }
 
-app.sendUpdate = function(obj) {
+shared.sendUpdate = function(obj) {
     document.querySelector('#edit-frame').contentWindow.postMessage({
         'command': 'update',
         'obj': obj
       }, '*')
 }
 
-app.sendAdd = function(obj) {
+shared.sendAdd = function(obj) {
     document.querySelector('#edit-frame').contentWindow.postMessage({
         'command': 'add',
         'html': obj.html,
@@ -33,7 +33,7 @@ app.sendAdd = function(obj) {
   * app.toast.show('failure', 'Error!', true)
   * app.toast.show('loading', 'Loading...', false)
   */
- app.toast = (function() {
+ shared.toast = (function() {
 
     return {
 
@@ -122,5 +122,3 @@ app.sendAdd = function(obj) {
     }
 
 })();
-
-app.toast.setup()

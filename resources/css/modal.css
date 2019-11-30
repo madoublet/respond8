@@ -305,9 +305,43 @@
     margin-left: 66px;
 }
 
-.app-modal .app-modal-list-item i.material-icons {
+/* sortable */
+.app-modal .app-modal-sortable-item {
+    display: block;
+    position: relative;
+    border-top: 1px solid #f0f0f0;
+    padding: 15px 20px;
+    cursor: pointer;
+}
+
+.app-modal .app-modal-sortable-item i.material-icons {
     position: absolute;
     top: 25px;
     right: 20px;
     color: #ccc;
+}
+
+.app-modal .app-modal-sortable-item h3 {
+    font-size: 1em;
+    padding: 0 0 2.5px 0;
+    margin: 0 0 0 40px;
+}
+
+.app-modal .app-modal-sortable-item h3, .app-modal .app-modal-sortable-item p, .app-modal .app-modal-sortable-item i.arrow {
+    pointer-events: none;
+}
+
+.app-modal .app-modal-sortable-item p {
+    font-size: 0.8em;
+    color: #888;
+    padding: 0;
+    margin: 0 0 0 40px;
+}
+.app-modal .app-modal-sortable-item i.drag-handle {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    z-index: 10;
+    cursor: move;
+    width: 25px;
 }

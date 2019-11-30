@@ -1,7 +1,7 @@
 /*
  * Models the add page modal
  */
-class AddPageModal {
+export class AddPageModal {
 
     /*
      * Initializes the model
@@ -164,18 +164,16 @@ class AddPageModal {
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(JSON.stringify(data))
 
-        app.toast.show('loading', 'Adding page...', false)
+        shared.toast.show('loading', 'Adding page...', false)
 
         xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 400) {
-                app.toast.show('success', 'Saved!', true)
+                shared.toast.show('success', 'Saved!', true)
                 location.href = `/edit?page=/${data.url}.html`
             }
             else {
-                app.toast.show('failure', 'There was an error saving the file', true)
+                shared.toast.show('failure', 'There was an error saving the file', true)
             }
         }
     }
 }
-
-new AddPageModal()

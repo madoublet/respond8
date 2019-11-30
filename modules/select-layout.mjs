@@ -1,7 +1,7 @@
 /*
  * Model for the Edit page
  */
-class SelectLayout {
+export class SelectLayout {
 
     /*
      * Initializes the model
@@ -58,7 +58,7 @@ class SelectLayout {
         window.addEventListener('message', message => {
             if(message.data) {
                 if(message.data.command == 'add-block') {
-                    app.sendAdd({type: 'add', html: message.data.data, isLayout: true, insertAfter: true})
+                    shared.sendAdd({type: 'add', html: message.data.data, isLayout: true, insertAfter: true})
                     context.modalSelectLayout.removeAttribute('active');
                 }
             }
@@ -68,5 +68,3 @@ class SelectLayout {
     
 
 }
-
-new SelectLayout()

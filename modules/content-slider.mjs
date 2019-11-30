@@ -1,7 +1,7 @@
 /*
  * Models the content slider
  */
-class ContentSlider {
+export class ContentSlider {
 
     /*
      * Initializes the model
@@ -104,5 +104,3 @@ class ContentSlider {
         }
     }
 }
-
-new ContentSlider()

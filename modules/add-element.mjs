@@ -1,7 +1,7 @@
 /*
  * Models the add element modal
  */
-class AddElementModal {
+export class AddElementModal {
 
     /*
      * Initializes the model
@@ -163,10 +163,8 @@ class AddElementModal {
      */
     add(html) {
       // this.onUpdate.emit({type: 'add', html: html, isLayout: element.isLayout, insertAfter: this.insertAfter});
-      app.sendAdd({type: 'add', html: html, isLayout: false, insertAfter: true})
+      shared.sendAdd({type: 'add', html: html, isLayout: false, insertAfter: true})
 
       this.toggleModal()
     }
 }
-
-let addElementModal = new AddElementModal()

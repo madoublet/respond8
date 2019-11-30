@@ -1,7 +1,7 @@
 /*
  * Models the edit image modal
  */
-class EditImageModal {
+export class EditImageModal {
 
     /*
      * Initializes the model
@@ -155,10 +155,8 @@ class EditImageModal {
       this.properties.alt = document.querySelector('#edit-image-alt').value
       this.properties.title = document.querySelector('#edit-image-title').value
 
-      app.sendUpdate({type: 'image', properties: this.properties})
+      shared.sendUpdate({type: 'image', properties: this.properties})
 
       this.toggleModal()
     }
 }
-
-let editImageModal = new EditImageModal()

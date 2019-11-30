@@ -57,6 +57,7 @@ app.post('/login',
 
 // setup public ui routes
 app.use('/', express.static('site'))
+app.use('/modules', express.static('modules'))
 app.use('/setup', express.static('views/setup'))
 app.use('/select', express.static('views/select'))
 app.use('/login', express.static('views/login'))

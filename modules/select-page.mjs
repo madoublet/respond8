@@ -1,7 +1,7 @@
 /*
  * Models the select page modal
  */
-class SelectPageModal {
+export class SelectPageModal {
 
     /*
      * Initializes the model
@@ -125,5 +125,3 @@ class SelectPageModal {
     }
 
 }
-
-let selectPageModal = new SelectPageModal()

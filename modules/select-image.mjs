@@ -1,7 +1,7 @@
 /*
  * Models the select image modal
  */
-class SelectImageModal {
+export class SelectImageModal {
 
     /*
      * Initializes the model
@@ -148,5 +148,3 @@ class SelectImageModal {
     }
 
 }
-
-let selectImageModal = new SelectImageModal()

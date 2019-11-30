@@ -1,7 +1,7 @@
 /*
  * Model for the Edit page
  */
-class Edit {
+export class Edit {
 
     /*
      * Initializes the model
@@ -102,14 +102,12 @@ class Edit {
 
         xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 400) {
-                app.toast.show('success', 'Saved!', true)
+                shared.toast.show('success', 'Saved!', true)
                 location.reload()
             }
             else {
-                app.toast.show('failure', 'There was an error saving the file', true)
+                shared.toast.show('failure', 'There was an error saving the file', true)
             }
         }
     }
 }
-
-new Edit()

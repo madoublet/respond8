@@ -1,7 +1,7 @@
 /*
  * Models the edit element modal
  */
-class EditElementModal {
+export class EditElementModal {
 
     /*
      * Initializes the model
@@ -121,10 +121,8 @@ class EditElementModal {
       this.properties.cssClass = document.querySelector('#edit-element-class').value 
       this.properties.html = document.querySelector('#edit-element-html').value 
 
-      app.sendUpdate({type: 'element', properties: this.properties, attributes: this.attributes})
+      shared.sendUpdate({type: 'element', properties: this.properties, attributes: this.attributes})
 
       this.toggleModal()
     }
 }
-
-let editElementModal = new EditElementModal()
