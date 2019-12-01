@@ -48,6 +48,8 @@ export class EditFormModal {
      */
     move(from, to) {
 
+        alert(`from ${from} to ${to}`)
+
         if (to >= this.fields.length) {
             var k = from - this.fields.length + 1;
             while (k--) {
@@ -55,6 +57,15 @@ export class EditFormModal {
             }
         }
         this.fields.splice(from, 0, this.fields.splice(to, 1)[0]);
+
+        alert(`from ${from} to ${to}`)
+    }
+
+    /*
+     * Removes an item from the array
+     */
+    remove(index) {
+      this.fields.splice(index, 1);
     }
 
     /*
@@ -161,8 +172,6 @@ export class EditFormModal {
         // clear fields
         this.fields = []
 
-        console.log(this.properties.html)
-
         // parse HTML
         this.parseHTML(this.properties.html)
 
@@ -180,8 +189,6 @@ export class EditFormModal {
             list = context.modal.querySelector('.app-modal-list'),
             x = 0
 
-      console.log('updateList', this.fields)
-
       list.innerHTML = ''
 
       // bind array to html
@@ -189,25 +196,37 @@ export class EditFormModal {
 
           let item = document.createElement('a')
           item.setAttribute('class', 'app-modal-sortable-item')
-          item.setAttribute('data-index', x)
 
           item.innerHTML += `<i class="drag-handle material-icons">drag_handle</i>
                       <h3>${i.label}</h3>
                       <p>${i.type}</p>
-                      <i class="arrow material-icons">arrow_forward</i>`
+                      <i class="remove-item material-icons">close</i>`
 
           list.appendChild(item)
 
           // handle click of list item
           item.addEventListener('click', function(e) {
 
-              if(!e.target.classList.contains('drag-handle')) {
+              if(!e.target.classList.contains('drag-handle') && !e.target.classList.contains('remove-item')) {
 
-                // get clicked index
-                let index = parseInt(e.target.getAttribute('data-index'))
+                // get index
+                let element = e.target,
+                    index = Array.from(element.parentNode.children).indexOf(element)
 
                 // edit field
                 window.dispatchEvent(new CustomEvent('app.editField', {detail: {field: context.fields[index], index: index}}))
+
+              }
+              else if(e.target.classList.contains('remove-item')) {
+
+                // get index
+                let element = e.target.parentNode,
+                    index = Array.from(element.parentNode.children).indexOf(element)
+
+                // remove and update
+                context.remove(index)
+                context.update()
+                context.updateList()
 
               }
 
@@ -223,7 +242,7 @@ export class EditFormModal {
           onEnd: function (e) {
               context.move(e.oldIndex, e.newIndex)
               context.update()
-              context.updateList()
+              //context.updateList()
           },
 
       })
@@ -268,6 +287,29 @@ export class EditFormModal {
               context.toggleModal()
             }
           })
+
+        // add button
+        document.querySelector('#button-add-form-field').addEventListener('click', function(e) { 
+
+          // get fields
+          let field = {
+            id: 'new-field',
+            label: 'New Field',
+            type: 'text',
+            required: false,
+            options: [],
+            helperText: '',
+            placeholder: '',
+            cssClass: ''
+          };
+
+          // push fields
+          context.fields.push(field);
+
+          // update ui
+          context.update()
+          context.updateList()
+        })
     }
 
     /*

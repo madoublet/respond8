@@ -68,6 +68,16 @@
     border: 1px solid #ccc;
     width: calc(100% - 50px);
     font-size: 14px;
+    background-color: #fff;
+}
+
+.app-modal select {
+    height: 40px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    width: calc(100% - 28px);
+    font-size: 14px;
+    background-color: #fff;
 }
 
 .app-modal .input-group {
