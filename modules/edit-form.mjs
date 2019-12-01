@@ -51,14 +51,16 @@ export class EditFormModal {
         alert(`from ${from} to ${to}`)
 
         if (to >= this.fields.length) {
-            var k = from - this.fields.length + 1;
+            var k = to - this.fields.length + 1;
             while (k--) {
                 this.fields.push(undefined);
             }
         }
-        this.fields.splice(from, 0, this.fields.splice(to, 1)[0]);
+        this.fields.splice(to, 0, this.fields.splice(from, 1)[0]);
 
         alert(`from ${from} to ${to}`)
+
+        console.log(this.fields)
     }
 
     /*
