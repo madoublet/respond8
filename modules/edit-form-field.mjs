@@ -9,10 +9,10 @@ export class EditFormFieldModal {
     constructor() {
 
         // setup view
-        this.view = `<section id="edit-form-field-modal" class="app-modal">
+        this.view = `<section id="edit-form-field-modal" class="app-modal app-modal-priority">
         <div class="app-modal-container">
         
-            <a class="app-modal-close" toggle-edit-link-modal>
+            <a class="app-modal-close" toggle-edit-form-field-modal>
               <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><g><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></g></svg>
             </a>
 
@@ -26,45 +26,82 @@ export class EditFormFieldModal {
                 <label>Label</label>
                 <input id="edit-form-field-label" type="text" maxlength="128" placeholder=""name="text">
               </div>
-        
-              <div class="app-modal-form-group">
-                <label>Link <a id="edit-link-select-page">Select Page</a></label>
-                <input id="edit-link-href" type="text" maxlength="128" placeholder="" name="href">
-              </div>
 
               <div class="app-modal-form-group">
-                <label>ID</label>
-                <input id="edit-link-id" type="text" maxlength="128" placeholder=""name="id">
-              </div>
-
-              <div class="app-modal-form-group">
-                <label>CSS Class</label>
-                <input id="edit-link-class" type="text" maxlength="128" placeholder="" name="cssclass">
-              </div>
-
-              <div class="app-modal-form-group">
-                <label>Target</label>
-                <input id="edit-link-target" type="text" maxlength="128" placeholder="" name="target">
-              </div>
-
-              <div class="app-modal-form-group">
-                <label>Title</label>
-                <input id="edit-link-title" type="text" maxlength="128" placeholder="" name="title">
-              </div>
-        
-            </div>  
-        
-            <div class="app-modal-actions">
-              <button type="submit">Update</button>
+                <label>Type</label>
+                <select id="edit-form-field-type" name="type">
+                  <option value="text">Text</option>
+                  <option value="email">Email</option>
+                  <option value="number">Number</option>
+                  <option value="url">URL</option>
+                  <option value="tel">Telephone</option>
+                  <option value="date">Date</option>
+                  <option value="time">Time</option>
+                  <option value="textarea">Textarea</option>
+                  <option value="select">Select List</option>
+                  <option value="checkbox-list">Check List</option>
+                </select>
             </div>
+
+            <div id="edit-form-field-options-group" class="app-modal-form-group">  
+              <label>Options</label>
+              <input id="edit-form-field-options" type="text" placeholder="Option 1, Option 2, Option 3"
+                name="options">
+              <small>Comma separated list of selectable options in the list.</small>
+            </div>
+
+            <div class="app-modal-form-group">
+              <label>Required</label>
+              <select id="edit-form-field-required"
+                name="required">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+              <small>Sets whether the form requires the field to be submitted.</small>
+            </div>
+
+            <div class="app-modal-form-group">  
+              <label>Helper Text</label>
+              <input id="edit-form-field-helper-text" type="text" maxlength="128" placeholder=""
+                name="helperText">
+              <small>(optional) Sets the text that shows beneath the field.  Used to aid in completing the form.</small>
+            </div>
+
+            <div class="app-modal-form-group">  
+              <label>Placeholder Text</label>
+              <input id="edit-form-field-placeholder" type="text" maxlength="128" placeholder=""
+                name="placeholder">
+              <small>(optional) Sets the text that shows in the field.  Used to instruct how to fill out the field.</small>
+            </div>
+
+            <div class="app-modal-form-group">  
+                <label>ID</label>
+                <input id="edit-form-field-id" type="text" maxlength="128" placeholder=""
+                  name="id">
+                <small>(optional) Sets the HTML id attribute.</small>
+              </div>
+
+            <div class="app-modal-form-group">  
+              <label>CSS Class</label>
+              <input id="edit-form-field-css-class" type="text" maxlength="128" placeholder=""
+                name="cssclass">
+              <small>(optional) Sets the HTML class attribute.</small>
+            </div>
+        
+          </div>  
+    
+          <div class="app-modal-actions">
+            <button type="submit">Update</button>
+          </div>
+        
         
           </form>
           
         </div>
         </section>`
 
-        this.properties = {}
-        this.attributes = {}
+        this.field = {}
+        this.index = 0
 
         // append view to DOM
         document.body.insertAdjacentHTML('beforeend', this.view)
@@ -99,31 +136,31 @@ export class EditFormFieldModal {
             return false
         })
 
-        // handle select page
-        this.modal.querySelector('#edit-link-select-page').addEventListener('click', function(e) {
-          window.dispatchEvent(new CustomEvent('app.selectPage', {detail: {target: '#edit-link-href'}}))
-        })
-
         // listen for the editor event to show modal
-        window.addEventListener('editor.event', data => {
+        window.addEventListener('app.editField', data => {
 
-          console.log('[edit.link] detail', data.detail)
+          console.log('[app.editField] detail', data)
 
-          if(data.detail.type == 'link') {
+          let options = []
 
-            context.properties = data.detail.properties
-            context.attributes = data.detail.attributes
+          context.field = data.detail.field
+          context.index = data.detail.index
 
-            document.querySelector('#edit-link-id').value = context.properties.id
-            document.querySelector('#edit-link-class').value = context.properties.cssClass
-            document.querySelector('#edit-link-text').value = context.properties.html
-            document.querySelector('#edit-link-href').value = context.properties.href
-            document.querySelector('#edit-link-title').value = context.properties.title
-            document.querySelector('#edit-link-target').value = context.properties.target
-            
-
-            context.toggleModal()
+          if(Array.isArray(data.detail.field.options)) {
+            options = data.detail.field.options.join(',')
           }
+
+          document.querySelector('#edit-form-field-label').value = data.detail.field.label
+          document.querySelector('#edit-form-field-type').value = data.detail.field.type
+          document.querySelector('#edit-form-field-options').value = options
+          document.querySelector('#edit-form-field-required').value = data.detail.field.required
+          document.querySelector('#edit-form-field-helper-text').value = data.detail.field.helperText
+          document.querySelector('#edit-form-field-placeholder').value = data.detail.field.placeholder
+          document.querySelector('#edit-form-field-id').value = data.detail.field.id
+          document.querySelector('#edit-form-field-css-class').value = data.detail.field.cssClass
+
+          this.toggleModal()
+
         })
     }
 
@@ -144,14 +181,24 @@ export class EditFormFieldModal {
      */
     edit() {
 
-      this.properties.id = document.querySelector('#edit-link-id').value
-      this.properties.cssClass = document.querySelector('#edit-link-class').value
-      this.properties.html = document.querySelector('#edit-link-text').value
-      this.properties.href = document.querySelector('#edit-link-href').value
-      this.properties.title = document.querySelector('#edit-link-title').value
-      this.properties.target = document.querySelector('#edit-link-target').value
+      let options = '';
 
-      shared.sendUpdate({type: 'link', properties: this.properties})
+      if(document.querySelector('#edit-form-field-options').value.length > 0) {
+        options = document.querySelector('#edit-form-field-options').value.split(',')
+      }
+
+      this.field.label = document.querySelector('#edit-form-field-label').value
+      this.field.type = document.querySelector('#edit-form-field-type').value
+      this.field.options = options
+      this.field.required = (document.querySelector('#edit-form-field-required').value.toLowerCase() == 'true')
+      this.field.helperText = document.querySelector('#edit-form-field-helper-text').value
+      this.field.placeholder = document.querySelector('#edit-form-field-placeholder').value
+      this.field.id = document.querySelector('#edit-form-field-id').value
+      this.field.cssClass = document.querySelector('#edit-form-field-css-class').value
+
+
+      // edit field
+      window.dispatchEvent(new CustomEvent('app.updateField', {detail: {field: this.field, index: this.index}}))
 
       this.toggleModal()
     }

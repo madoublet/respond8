@@ -20,6 +20,10 @@ export class EditFormModal {
         
             <div class="app-modal-list"></div>
 
+            <button id="button-add-form-field" class="circle-button">
+                <i class="material-icons">add</i>
+            </button>
+
         </div>
         </section>`
 
@@ -40,7 +44,7 @@ export class EditFormModal {
     }
 
     /*
-     * Move ite in array
+     * Move item in array
      */
     move(from, to) {
 
@@ -156,43 +160,73 @@ export class EditFormModal {
 
         // clear fields
         this.fields = []
-        list.innerHTML = ''
+
+        console.log(this.properties.html)
 
         // parse HTML
         this.parseHTML(this.properties.html)
 
-        // bind array to html
-        this.fields.forEach(i => {
+        // update the list
+        this.updateList()
 
-            let item = document.createElement('a')
-            item.setAttribute('class', 'app-modal-sortable-item')
-            item.setAttribute('data-url', i.url)
+    }
 
-            item.innerHTML += `<i class="drag-handle material-icons">drag_handle</i>
-                        <h3>${i.label}</h3>
-                        <p>${i.type}</p>
-                        <i class="arrow material-icons">arrow_forward</i>`
+    /*
+     * Update the list
+     */
+    updateList() {
 
-            list.appendChild(item)
+      let context = this,
+            list = context.modal.querySelector('.app-modal-list'),
+            x = 0
 
-            // handle click of list item
-            item.addEventListener('click', function(e) {
+      console.log('updateList', this.fields)
 
-                if(!e.target.classList.contains('drag-handle')) {
-                    
-                }
+      list.innerHTML = ''
 
-            })
-        });
+      // bind array to html
+      this.fields.forEach(i => {
 
-        Sortable.create(list, {
-            handle: '.drag-handle',
-            onEnd: function (e) {
-                context.move(e.oldIndex, e.newIndex)
-                context.update()
-            },
+          let item = document.createElement('a')
+          item.setAttribute('class', 'app-modal-sortable-item')
+          item.setAttribute('data-index', x)
 
-        })
+          item.innerHTML += `<i class="drag-handle material-icons">drag_handle</i>
+                      <h3>${i.label}</h3>
+                      <p>${i.type}</p>
+                      <i class="arrow material-icons">arrow_forward</i>`
+
+          list.appendChild(item)
+
+          // handle click of list item
+          item.addEventListener('click', function(e) {
+
+              if(!e.target.classList.contains('drag-handle')) {
+
+                // get clicked index
+                let index = parseInt(e.target.getAttribute('data-index'))
+
+                // edit field
+                window.dispatchEvent(new CustomEvent('app.editField', {detail: {field: context.fields[index], index: index}}))
+
+              }
+
+          })
+          
+          x++
+
+      });
+
+      // make list sortable
+      Sortable.create(list, {
+          handle: '.drag-handle',
+          onEnd: function (e) {
+              context.move(e.oldIndex, e.newIndex)
+              context.update()
+              context.updateList()
+          },
+
+      })
 
     }
 
@@ -210,6 +244,18 @@ export class EditFormModal {
                 context.toggleModal()
             })
         }
+
+        // listen for the editor event to show modal
+        window.addEventListener('app.updateField', data => {
+
+          // update field
+          context.fields[data.detail.index] = data.detail.field
+
+          // update
+          context.update()
+          context.updateList()
+          
+        })
 
         // listen for event to show modal
         window.addEventListener('editor.event', data => {

@@ -10,6 +10,7 @@ import { EditLinkModal } from '/modules/edit-link.mjs'
 import { SelectImageModal } from '/modules/select-image.mjs'
 import { SelectLayout } from '/modules/select-layout.mjs'
 import { SelectPageModal } from '/modules/select-page.mjs'
+import { EditFormFieldModal } from '/modules/edit-form-field.mjs'
 
 // setup app
 let app = {}
@@ -30,7 +31,8 @@ app.setup = function() {
         editLinkModal = new EditLinkModal(),
         selectImageModal = new SelectImageModal(),
         selectLayout = new SelectLayout(),
-        selectPageModal = new SelectPageModal()
+        selectPageModal = new SelectPageModal(),
+        editFormFieldModal = new EditFormFieldModal()
 
 }
 
