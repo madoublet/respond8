@@ -56,10 +56,18 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
+.app-modal .app-modal-form-has-tabs {
+    height: 370px;
+}
+
 .app-modal .app-modal-form-group {
     position: relative;
     display: block;
     padding: 0 0 25px 25px;
+}
+
+.app-modal .app-modal-form-group[hidden] {
+    display: none;
 }
 
 .app-modal input[type=text], .app-modal input[type=email], .app-modal input[type=password] {
@@ -263,12 +271,44 @@
     box-shadow: 0 0 10px #bbb;
 }
 
+/* tabs */
+.app-modal-tabs {
+    list-style: none;
+    margin: 0;
+    padding: 15px 20px 0 20px;
+}
+
+.app-modal-tabs li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.app-modal-tabs li a {
+    display: inline-block;
+    font-size: 13px;
+    color: #888;
+    padding: 7.5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.app-modal-tabs li[active] a {
+    background: #2EBF91;
+    color: #fff;
+    font-weight: bold;
+}
+
 /* list */
 .app-modal .app-modal-list {
     margin-top: 20px;
     border-bottom: 1px solid #f0f0f0;
     height: 450px;
     overflow-y: auto;
+}
+
+.app-modal .app-modal-list.app-modal-list-has-tabs {
+    height: 400px;
 }
 
 .app-modal .app-modal-list.app-modal-list-compressed {

@@ -16,20 +16,67 @@ export class EditFormModal {
               <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><g><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></g></svg>
             </a>
 
-            <h2>Form Fields</h2>
-        
-            <div class="app-modal-list"></div>
+            <h2>Form</h2>
 
-            <button id="button-add-form-field" class="circle-button">
-                <i class="material-icons">add</i>
-            </button>
+            <ul class="app-modal-tabs">
+              <li active><a data-tab="edit-form-fields">Fields</a></li>
+              <li><a data-tab="edit-form-settings">Settings</a></li>
+            </ul>
+
+            <div id="edit-form-fields" class="app-modal-tab">
+            
+              <div class="app-modal-list app-modal-list-has-tabs"></div>            
+
+              <button id="button-add-form-field" class="circle-button">
+                  <i class="material-icons">add</i>
+              </button>
+
+            </div>
+
+            <div id="edit-form-settings" class="app-modal-tab" hidden>
+
+              <form>
+                <div class="app-modal-form app-modal-form-has-tabs">
+            
+                  <div class="app-modal-form-group">
+                    <label>Success Message</label>
+                    <input id="edit-form-success-message" type="text" maxlength="256" placeholder="" name="text">
+                  </div>
+
+                  <div class="app-modal-form-group">
+                    <label>Error Message</label>
+                    <input id="edit-form-error-message" type="text" maxlength="256" placeholder="" name="text">
+                  </div>
+
+                  <div class="app-modal-form-group">
+                    <label>Button Label</label>
+                    <input id="edit-form-button-label" type="text" maxlength="256" placeholder="" name="text">
+                  </div>
+
+                  <div class="app-modal-form-group">
+                    <label>Destination <a id="edit-form-select-page">Select Page</a></label>
+                    <input id="edit-form-destination" type="text" maxlength="256" placeholder="" name="text">
+                  </div>
+
+                </div>
+
+                <div class="app-modal-actions">
+                  <button type="submit">Update</button>
+                </div>
+              </form>  
+            </div>
 
         </div>
         </section>`
 
         this.properties = {}
         this.attributes = {}
-        this.settings = {}
+        this.settings = {
+          buttonLabel: 'Submit',
+          successMessage: 'You have successfully submitted your form!',
+          errorMessage: 'You have an error in your form.',
+          destination: null
+        }
         this.fields = []
         this.target = null
 
@@ -38,6 +85,7 @@ export class EditFormModal {
 
         // setup private variables
         this.modal = document.querySelector('#edit-form-modal')
+        this.form = this.modal.querySelector('form')
 
         // handle events
         this.setupEvents()
@@ -48,19 +96,14 @@ export class EditFormModal {
      */
     move(from, to) {
 
-        alert(`from ${from} to ${to}`)
-
         if (to >= this.fields.length) {
             var k = to - this.fields.length + 1;
             while (k--) {
                 this.fields.push(undefined);
             }
         }
+
         this.fields.splice(to, 0, this.fields.splice(from, 1)[0]);
-
-        alert(`from ${from} to ${to}`)
-
-        console.log(this.fields)
     }
 
     /*
@@ -79,7 +122,7 @@ export class EditFormModal {
 
         for(let x=0; x < this.fields.length; x++) {
 
-            let field = '', id = '', cssClass = '', options = '';
+            let field = '', id = '', cssClass = '', options = '', required = '';
 
             // create an id from the label
             id = this.fields[x].label.toLowerCase().replace(/[^a-zA-Z ]/g, "");
@@ -93,6 +136,10 @@ export class EditFormModal {
                 cssClass = ' ' + cssClass;
             }
 
+            if(this.fields[x].required == true) {
+              required = ' required'
+            }
+
             // build field
             if(this.fields[x].type == 'select') {
 
@@ -103,7 +150,7 @@ export class EditFormModal {
 
                 field = `<div class="form-group${cssClass}">
                             <label>${this.fields[x].label}</label>
-                            <select name="${id}">${options}</select>
+                            <select name="${id}" ${required}>${options}</select>
                             <small>${this.fields[x].helperText}</small>
                             </div>`;
 
@@ -126,7 +173,7 @@ export class EditFormModal {
 
                 field = `<div class="form-group${cssClass}">
                             <label>${this.fields[x].label}</label>
-                            <textarea name="${id}"></textarea>
+                            <textarea name="${id}" ${required}></textarea>
                             <small>${this.fields[x].helperText}</small>
                             </div>`;
 
@@ -135,7 +182,7 @@ export class EditFormModal {
 
                 field = `<div class="form-group${cssClass}">
                             <label>${this.fields[x].label}</label>
-                            <input name="${id}" type="${this.fields[x].type}" placeholder="${this.fields[x].placeholder}">
+                            <input name="${id}" type="${this.fields[x].type}" ${required} placeholder="${this.fields[x].placeholder}">
                             <small>${this.fields[x].helperText}</small>
                             </div>`;
 
@@ -202,7 +249,7 @@ export class EditFormModal {
           item.innerHTML += `<i class="drag-handle material-icons">drag_handle</i>
                       <h3>${i.label}</h3>
                       <p>${i.type}</p>
-                      <i class="remove-item material-icons">close</i>`
+                      <i class="remove-item material-icons">remove_circle_outline</i>`
 
           list.appendChild(item)
 
@@ -278,6 +325,11 @@ export class EditFormModal {
           
         })
 
+        // handle select page
+        this.modal.querySelector('#edit-form-select-page').addEventListener('click', function(e) {
+          window.dispatchEvent(new CustomEvent('app.selectPage', {detail: {target: '#edit-form-destination'}}))
+        })
+
         // listen for event to show modal
         window.addEventListener('editor.event', data => {
 
@@ -289,6 +341,22 @@ export class EditFormModal {
               context.toggleModal()
             }
           })
+
+        // handle form submission
+        this.form.addEventListener('submit', function(e) {
+
+            e.preventDefault()
+
+            context.settings.buttonLabel = context.modal.querySelector('#edit-form-button-label').value
+            context.settings.successMessage = context.modal.querySelector('#edit-form-success-message').value
+            context.settings.errorMessage = context.modal.querySelector('#edit-form-error-message').value
+            context.settings.destination = context.modal.querySelector('#edit-form-destination').value
+
+            context.update()
+            context.toggleModal()
+
+            return false
+        })
 
         // add button
         document.querySelector('#button-add-form-field').addEventListener('click', function(e) { 
@@ -311,6 +379,22 @@ export class EditFormModal {
           // update ui
           context.update()
           context.updateList()
+        })
+
+        // setup tabs
+        this.modal.querySelector('.app-modal-tabs').addEventListener('click', function(e) { 
+
+          // switch active tab
+          let lis = context.modal.querySelectorAll('.app-modal-tabs li')
+          for(let x=0; x<lis.length; x++) lis[x].removeAttribute('active')
+
+          e.target.parentNode.setAttribute('active', '')
+
+          // switch active content
+          let tabs = context.modal.querySelectorAll('.app-modal-tab')
+          for(let x=0; x<tabs.length; x++) tabs[x].setAttribute('hidden', '')
+
+          context.modal.querySelector(`#${e.target.getAttribute('data-tab')}`).removeAttribute('hidden')
         })
     }
 
@@ -348,29 +432,35 @@ export class EditFormModal {
     el = doc.querySelector('input[type=submit]');
 
     if(el) {
-      this.settings.buttonLabel = el.getAttribute('value');
+      this.settings.buttonLabel = el.getAttribute('value') || ''
     }
 
     // get success message
     el = doc.querySelector('.success-message');
 
     if(el) {
-      this.settings.successMessage = el.getAttribute('value');
+      this.settings.successMessage = el.getAttribute('value') || ''
     }
 
     // get error message
     el = doc.querySelector('.error-message');
 
     if(el) {
-      this.settings.errorMessage = el.getAttribute('value');
+      this.settings.errorMessage = el.getAttribute('value') || ''
     }
 
     // get destination
     el = doc.querySelector('.destination');
 
     if(el) {
-      this.settings.destination = el.getAttribute('value');
+      this.settings.destination = el.getAttribute('value') || ''
     }
+
+    // set values
+    this.modal.querySelector('#edit-form-button-label').value = this.settings.buttonLabel
+    this.modal.querySelector('#edit-form-success-message').value = this.settings.successMessage
+    this.modal.querySelector('#edit-form-error-message').value = this.settings.errorMessage
+    this.modal.querySelector('#edit-form-destination').value = this.settings.destination
 
     // get form groups
     let groups = doc.querySelectorAll('.form-group');

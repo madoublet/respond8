@@ -136,18 +136,37 @@ export class EditFormFieldModal {
             return false
         })
 
+        // hide/show options
+        document.querySelector('#edit-form-field-type').addEventListener('change', function(e) {
+
+          if(e.target.value == 'select' || e.target.value == 'checkbox-list') {
+            document.querySelector('#edit-form-field-options-group').removeAttribute('hidden')
+          }
+          else {
+            document.querySelector('#edit-form-field-options-group').setAttribute('hidden', '')
+          }
+        })
+
         // listen for the editor event to show modal
         window.addEventListener('app.editField', data => {
 
           console.log('[app.editField] detail', data)
 
-          let options = []
+          let options = ''
 
           context.field = data.detail.field
           context.index = data.detail.index
 
           if(Array.isArray(data.detail.field.options)) {
-            options = data.detail.field.options.join(',')
+
+              for(let x=0; x< data.detail.field.options.length; x++) {
+                options += data.detail.field.options[x].text + ', ';
+              }
+        
+              if(options.length > 0) {
+                options = options.slice(0, -2);
+              }
+
           }
 
           document.querySelector('#edit-form-field-label').value = data.detail.field.label
@@ -158,6 +177,10 @@ export class EditFormFieldModal {
           document.querySelector('#edit-form-field-placeholder').value = data.detail.field.placeholder
           document.querySelector('#edit-form-field-id').value = data.detail.field.id
           document.querySelector('#edit-form-field-css-class').value = data.detail.field.cssClass
+
+          if(data.detail.field.type != 'select' && data.detail.field.type != 'checkbox-list') {
+            document.querySelector('#edit-form-field-options-group').setAttribute('hidden', '')
+          }
 
           this.toggleModal()
 
@@ -181,12 +204,29 @@ export class EditFormFieldModal {
      */
     edit() {
 
-      let options = '';
+      let options = [];
 
       if(document.querySelector('#edit-form-field-options').value.length > 0) {
-        options = document.querySelector('#edit-form-field-options').value.split(',')
+        let arr = document.querySelector('#edit-form-field-options').value.split(',')
+
+        // build options
+        for(let x=0; x<arr.length; x++) {
+
+          // get text and value
+          let text = arr[x].trim();
+          let value = text.toLowerCase().replace(/ /g, '-');
+          value = value.replace(/[^a-zA-Z ]/g, "");
+
+          // create optinos
+          options.push({
+            text: text,
+            value: value
+          });
+        }
+
       }
 
+      // get field values
       this.field.label = document.querySelector('#edit-form-field-label').value
       this.field.type = document.querySelector('#edit-form-field-type').value
       this.field.options = options
@@ -195,7 +235,6 @@ export class EditFormFieldModal {
       this.field.placeholder = document.querySelector('#edit-form-field-placeholder').value
       this.field.id = document.querySelector('#edit-form-field-id').value
       this.field.cssClass = document.querySelector('#edit-form-field-css-class').value
-
 
       // edit field
       window.dispatchEvent(new CustomEvent('app.updateField', {detail: {field: this.field, index: this.index}}))
