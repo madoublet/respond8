@@ -1505,8 +1505,6 @@ editor = (function() {
               }
             }
 
-            console.log('here', e.target);
-
             // handle links
             if (e.target.nodeName == 'A') {
 
@@ -1567,8 +1565,6 @@ editor = (function() {
             }
             else if(e.target.hasAttribute('site-widget')) {
 
-              console.log('widget');
-          
               let element = e.target;
 
                 // post message to app
@@ -1587,8 +1583,6 @@ editor = (function() {
 
             }
             else if(e.target.hasAttribute('site-component')) {
-
-              console.log('component');
 
                 // post message to app
                 window.parent.postMessage({
@@ -1760,8 +1754,6 @@ editor = (function() {
             if (e.target.hasAttribute('contentEditable')) {
 
               el = e.target;
-
-              // console.log('[keyed] iscontenteditable node=' + e.target.nodeName + ' code=' + e.keyCode);
 
               // ENTER key
               if (e.keyCode === 13) {
@@ -1998,8 +1990,6 @@ editor = (function() {
      */
     appendBlock: function(html) {
 
-      console.log(html);
-
       editor.setChanged('block appended');
 
       var el = document.querySelector('[editor]'), x, newNode, node, firstChild;
@@ -2010,8 +2000,6 @@ editor = (function() {
 
       // get new new node
       newNode = newNode.childNodes[0];
-
-      console.log(newNode);
 
       // append to the end of the editor
       el.appendChild(newNode);

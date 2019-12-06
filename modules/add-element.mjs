@@ -70,8 +70,6 @@ export class AddElementModal {
               let json = JSON.parse(xhr.responseText),
                   index = 0
 
-              console.log(json)
-
               // set items
               context.items = json
 

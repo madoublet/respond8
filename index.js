@@ -3,6 +3,7 @@ const express = require('express'),
     setup = require('./api/setup'),
     page = require('./api/page'),
     image = require('./api/image'),
+    file = require('./api/file'),
     app = express(),
     port = 3000,
     path = require('path'),
@@ -86,6 +87,7 @@ app.use(express.json({limit: '50mb'}))
 app.use('/api/setup', setup)
 app.use('/api/page', page)
 app.use('/api/image', image)
+app.use('/api/file', file)
 
 app.get('/', (req, res) => res.send(`<html>
     <head><title>Welcome to Respond</title></head>

@@ -143,13 +143,18 @@ class Upload {
          */
         function resizeImage(container, file, maxWidth, done) {
 
-            let reader = new FileReader();
-            reader.readAsDataURL(file);
+            console.log(file)
+
+            let reader = new FileReader(),
+                ext = file.name.split('.').pop();
+            
+            reader.readAsDataURL(file)
             reader.onloadend = function() {
                 
-                let img = document.createElement("img");
-                let canvas = document.createElement("canvas");
-                let thumb = document.createElement("canvas");
+                let img = document.createElement("img"),
+                    natural = document.createElement("canvas"),
+                    thumb = document.createElement("canvas"),
+                    resized = document.createElement("canvas");
 
                 // set src
                 img.src = reader.result;
@@ -168,18 +173,38 @@ class Upload {
 
                     // set thumb
                     if(width > height) {
-                        thumb.setAttribute('width', 150);
-                        thumb.setAttribute('height', ((150/width) * height));   
+                        thumb.setAttribute('width', 250);
+                        thumb.setAttribute('height', ((250/width) * height))
                     } 
                     else {
-                        thumb.setAttribute('width', (150/height) * width);
-                        thumb.setAttribute('height', 150); 
+                        thumb.setAttribute('width', (250/height) * width)
+                        thumb.setAttribute('height', 250); 
                     }                
                     
                     // set canvas width
-                    canvas.setAttribute('width', resizeWidth);
-                    canvas.setAttribute('height', resizeHeight);
+                    resized.setAttribute('width', resizeWidth)
+                    resized.setAttribute('height', resizeHeight)
 
+                    // set natural image
+                    natural.setAttribute('width', width)
+                    natural.setAttribute('height', height)
+
+                    // draw the image
+                    thumb.getContext('2d').drawImage(img, 0, 0)
+                    resized.getContext('2d').drawImage(img, 0, 0)
+                    natural.getContext('2d').drawImage(img, 0, 0)
+
+                    // resize jpgs and pngs
+                    if(ext.toLowerCase() == 'png' || ext.toLowerCase() == 'jpg') {
+                        uploadBlob(file, resized.toDataURL(), thumb.toDataURL(), 0)
+                    }
+                    else {
+                        let url = natural.toDataURL()
+                        uploadBlob(file, url, url, 0)
+                    }
+        
+
+                    /*
                     const p = pica();
 
                     console.log('before resize', file)
@@ -188,21 +213,15 @@ class Upload {
                     p.resize(img, canvas)
                         .then(result => {
 
-                            console.log('after resize', file)
+                            // resize thumb
+                            p.resize(img, thumb)
+                                .then(result => {
+                                    
+                                })
 
-                            console.log(canvas.toDataURL());
-
-                            // canvas.toDataURL()
-                            uploadBlob(file, canvas.toDataURL(), 0);
-
-                        });
-
-                    // resize thumb
-                    /*
-                    p.resize(img, thumb)
-                        .then(result => {
-                            //setupThumbs(container, thumb);
                         });*/
+
+                    
 
                 }
                 // end onload
@@ -219,52 +238,57 @@ class Upload {
             // determine if file is supported
             if(supportedTypes.indexOf(file.type) > -1) {
 
-                //if(checkbox.checked == false) {
+                // see if it is a resizable image
+                if(resizableImages.indexOf(file.type) > -1) {
 
-                    // see if it is a resizable image
-                    if(resizableImages.indexOf(file.type) > -1) {
+                    let f = "";
 
-                        let f = "";
-
-                        // create container to hold image
-                        var container = document.createElement('div');
-                        container.setAttribute('class', 'app-upload-container');
-                        container.innerHTML = `
-                            <div class="app-upload-container-image"><span>Retrieving image...</span></div>
-                        `;
+                    // create container to hold image
+                    var container = document.createElement('div');
+                    container.setAttribute('class', 'app-upload-container');
+                    container.innerHTML = `
+                        <div class="app-upload-container-image"><span>Retrieving image...</span></div>
+                    `;
+                
+                    document.body.appendChild(container);
                     
-                        document.body.appendChild(container);
-                        
-                        var imageContainer = container.querySelector('.app-upload-container-image');
-                        imageContainer.setAttribute('data-file-type', file.type);
+                    var imageContainer = container.querySelector('.app-upload-container-image');
+                    imageContainer.setAttribute('data-file-type', file.type);
 
-                        resizeImage(container, file, maxWidth, function(canvas) {
+                    resizeImage(container, file, maxWidth, function(canvas) {
+                        
+                        container.querySelector('span').remove();
+                        canvas.setAttribute('class', 'app-upload-canvas');
+                        imageContainer.appendChild(canvas);
+
+                    });
+                    // end resize
+                }
+                else {
+                    
+                    function getBase64(file) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function () {
+                            console.log(reader.result);
+
+                            let thumb = null
                             
-                            container.querySelector('span').remove();
-                            canvas.setAttribute('class', 'app-upload-canvas');
-                            imageContainer.appendChild(canvas);
+                            if(file.type.indexOf('images/') != -1) {
+                                thumb = reader.result
+                            }
 
-                        });
-                        // end resize
-                    }
-                    else {
-                        //uploadFile(file, index);
-                        function getBase64(file) {
-                            var reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onload = function () {
-                                console.log(reader.result);
-                                uploadBlob(file, reader.result, 0)
-                            };
-                            reader.onerror = function (error) {
-                                console.log('Error: ', error);
-                            };
-                        }          
-                        
-                        getBase64(file)
+                            uploadBlob(file, reader.result, reader.result, 0)
+                        };
+                        reader.onerror = function (error) {
+                            console.log('Error: ', error);
+                        };
+                    }          
+                    
+                    getBase64(file)
 
-                        
-                    }
+                    
+                }
             }
             // end supported check
 
@@ -273,7 +297,7 @@ class Upload {
         /*
          * Upload blob data
          */
-        function uploadBlob(file, blob, index) {
+        function uploadBlob(file, image, thumb, index) {
 
             var xhr = new XMLHttpRequest()
 
@@ -281,7 +305,8 @@ class Upload {
                 name: file.name,
                 size: file.size,
                 type: file.type,
-                blob: blob
+                image: image,
+                thumb: thumb
             }
             
             console.log('uploadBlob.data', data)

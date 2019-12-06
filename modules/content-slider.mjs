@@ -65,9 +65,8 @@ export class ContentSlider {
                         <i class="material-icons">arrow_forward</i>
                     </a>
                 </div>  `
-                });
-
-                console.log(json)
+                })
+            
             }
             else {
                 alert('retrieve error')

@@ -41,7 +41,7 @@ export class SelectImageModal {
         let upload = new Upload(
             // upload el
             el, 
-            "/api/image/upload", // url
+            "/api/file/upload", // url
             "POST",
             // complete
             function(file) {

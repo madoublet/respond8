@@ -11,6 +11,7 @@ import { SelectImageModal } from '/modules/select-image.mjs'
 import { SelectLayout } from '/modules/select-layout.mjs'
 import { SelectPageModal } from '/modules/select-page.mjs'
 import { EditFormFieldModal } from '/modules/edit-form-field.mjs'
+import { EditGalleryModal } from '/modules/edit-gallery.mjs'
 
 // setup app
 let app = {}
@@ -27,6 +28,7 @@ app.setup = function() {
         addPageModal = new AddPageModal(),
         editElementModal = new EditElementModal(),
         editFormModal = new EditFormModal(),
+        editGalleryModal = new EditGalleryModal(),
         editImageModal = new EditImageModal(),
         editLinkModal = new EditLinkModal(),
         selectImageModal = new SelectImageModal(),
