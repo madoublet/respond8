@@ -13,6 +13,10 @@
     z-index: 5;
 }
 
+.app-modal.app-modal-priority-2 {
+    z-index: 6;
+}
+
 .app-modal[active] {
     visibility: visible;
   }
@@ -150,6 +154,9 @@
     text-align: left;
     text-transform: none;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .app-modal p {
@@ -158,6 +165,10 @@
     color: #888;
     line-height: 20px;
     font-size: 14px;
+    max-width: 325px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .app-modal label {
@@ -336,6 +347,13 @@
     border-radius: 10px;
     border: 1px solid #f0f0f0;
     object-fit: cover;
+    overflow: hidden;
+}
+
+.app-modal .app-modal-list-item-image img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
 }
 
 .app-modal .app-modal-list-item * {
@@ -406,4 +424,14 @@
     z-index: 10;
     cursor: move;
     width: 25px;
+}
+
+
+.app-modal .app-modal-sortable-item .app-modal-list-item-image {
+    left: 55px;
+}
+
+.app-modal .app-modal-sortable-item.app-modal-sortable-item-has-image h3,
+.app-modal .app-modal-sortable-item.app-modal-sortable-item-has-image p {
+    margin-left: 100px;
 }

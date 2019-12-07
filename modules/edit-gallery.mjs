@@ -16,7 +16,7 @@ export class EditGalleryModal {
               <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><g><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></g></svg>
             </a>
 
-            <h2>Gallery</h2>
+            <h2>Images</h2>
 
             <div class="app-modal-list"></div>            
 
@@ -229,10 +229,10 @@ export class EditGalleryModal {
       this.images.forEach(i => {
 
           let item = document.createElement('a')
-          item.setAttribute('class', 'app-modal-sortable-item')
+          item.setAttribute('class', 'app-modal-sortable-item app-modal-sortable-item-has-image')
 
           item.innerHTML += `<i class="drag-handle material-icons">drag_handle</i>
-                      <div class="app-modal-list-item-thumb" style="background-image: url(${i.display})'"></div>
+                      <div class="app-modal-list-item-image"><img src="${i.display}"></div>
                       <h3>${i.title}</h3>
                       <p>${i.src}</p>
                       <i class="remove-item material-icons">remove_circle_outline</i>`
@@ -249,7 +249,7 @@ export class EditGalleryModal {
                     index = Array.from(element.parentNode.children).indexOf(element)
 
                 // edit image
-                window.dispatchEvent(new CustomEvent('app.editGalleryImage', {detail: {image: context.images[index], index: index}}))
+                window.dispatchEvent(new CustomEvent('app.editGalleryImage', {detail: {image: context.images[index], type: context.type, index: index}}))
 
               }
               else if(e.target.classList.contains('remove-item')) {
@@ -322,7 +322,7 @@ export class EditGalleryModal {
               context.fillList()
               context.toggleModal()
             }
-            else if(data.detail.type == 'widget' && data.detail.widget == 'gallery') {
+            else if(data.detail.type == 'widget' && data.detail.widget == 'slideshow') {
               context.properties = data.detail.properties
               context.type = 'slideshow'
               context.fillList()
@@ -336,13 +336,13 @@ export class EditGalleryModal {
 
           // set image
           let image = {
-            type: context.type,
-            src: src,
-            href: href,
-            title: title,
-            display: display,
-            text: text
-          };
+            type: this.type,
+            src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTAwcHgiIGhlaWdodD0iNTAwcHgiIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHN0eWxlPSJiYWNrZ3JvdW5kOiAjODg4ODg4OyI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ5LjIgKDUxMTYwKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5EZXNrdG9wIENvcHkgODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJEZXNrdG9wLUNvcHktOCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZm9udC1mYW1pbHk9IkF2ZW5pck5leHQtUmVndWxhciwgQXZlbmlyIE5leHQiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSJub3JtYWwiPgogICAgICAgIDx0ZXh0IGlkPSJQbGFjZWhvbGRlciIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDx0c3BhbiB4PSIxMTkuMTI4IiB5PSIyNjUiPlBsYWNlaG9sZGVyPC90c3Bhbj4KICAgICAgICA8L3RleHQ+CiAgICA8L2c+Cjwvc3ZnPg==",
+            href: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTAwcHgiIGhlaWdodD0iNTAwcHgiIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHN0eWxlPSJiYWNrZ3JvdW5kOiAjODg4ODg4OyI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ5LjIgKDUxMTYwKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5EZXNrdG9wIENvcHkgODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJEZXNrdG9wLUNvcHktOCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZm9udC1mYW1pbHk9IkF2ZW5pck5leHQtUmVndWxhciwgQXZlbmlyIE5leHQiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSJub3JtYWwiPgogICAgICAgIDx0ZXh0IGlkPSJQbGFjZWhvbGRlciIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDx0c3BhbiB4PSIxMTkuMTI4IiB5PSIyNjUiPlBsYWNlaG9sZGVyPC90c3Bhbj4KICAgICAgICA8L3RleHQ+CiAgICA8L2c+Cjwvc3ZnPg==",
+            title: "Placeholder caption",
+            display: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTAwcHgiIGhlaWdodD0iNTAwcHgiIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHN0eWxlPSJiYWNrZ3JvdW5kOiAjODg4ODg4OyI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ5LjIgKDUxMTYwKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5EZXNrdG9wIENvcHkgODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJEZXNrdG9wLUNvcHktOCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZm9udC1mYW1pbHk9IkF2ZW5pck5leHQtUmVndWxhciwgQXZlbmlyIE5leHQiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSJub3JtYWwiPgogICAgICAgIDx0ZXh0IGlkPSJQbGFjZWhvbGRlciIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDx0c3BhbiB4PSIxMTkuMTI4IiB5PSIyNjUiPlBsYWNlaG9sZGVyPC90c3Bhbj4KICAgICAgICA8L3RleHQ+CiAgICA8L2c+Cjwvc3ZnPg==",
+            text: ""
+          }
 
           // push image
           context.images.push(image);
@@ -414,7 +414,7 @@ export class EditGalleryModal {
 
       // make sure the image is not an external image or data uri
       if(src.indexOf('http://') == -1 && src.indexOf('https://') == -1 && src.indexOf('data:') == -1) {
-        display = localStorage.getItem('app-siteurl') + src;
+        display = '/' + src;
       }
 
       // get image
@@ -427,8 +427,10 @@ export class EditGalleryModal {
         text: text
       };
 
+      console.log('[image]', image)
+
       // push image
-      this.images.push(image);
+      this.images.push(image)
 
     }
 

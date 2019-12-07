@@ -9,7 +9,7 @@ export class SelectImageModal {
     constructor() {
 
         // setup view
-        this.view = `<section id="select-image-modal" class="app-modal app-modal-priority">
+        this.view = `<section id="select-image-modal" class="app-modal app-modal-priority-2">
         <div class="app-modal-container">
         
             <a class="app-modal-close" toggle-select-image-modal>
@@ -28,6 +28,7 @@ export class SelectImageModal {
         this.properties = {}
         this.attributes = {}
         this.target = null
+        this.thumb = null
 
         // append view to DOM
         document.body.insertAdjacentHTML('beforeend', this.view)
@@ -85,6 +86,7 @@ export class SelectImageModal {
                     let item = document.createElement('a')
                     item.setAttribute('class', 'app-modal-list-item app-modal-list-item-has-image')
                     item.setAttribute('data-url', i.url)
+                    item.setAttribute('data-thumb', i.thumb)
 
                     item.innerHTML += `<h3>${i.name}</h3>
                                 <p>${i.url}</p>
@@ -98,6 +100,9 @@ export class SelectImageModal {
                       if(context.target) {
                         document.querySelector(context.target).value = e.target.getAttribute('data-url')
                       }
+                      if(context.thumb) {
+                        document.querySelector(context.thumb).value = e.target.getAttribute('data-thumb')
+                      }
                       context.toggleModal()
                     })
                 });
@@ -105,7 +110,6 @@ export class SelectImageModal {
                 
             }
             else {
-                alert('retrieve error')
             }
         }
         // end xhr
@@ -131,6 +135,7 @@ export class SelectImageModal {
         window.addEventListener('app.selectImage', data => {
           console.log('[app.selectImage] detail', data.detail)
           context.target = data.detail.target || null
+          context.thumb = data.detail.thumb || null
           context.toggleModal()
         })
     }

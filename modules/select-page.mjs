@@ -9,7 +9,7 @@ export class SelectPageModal {
     constructor() {
 
         // setup view
-        this.view = `<section id="select-page-modal" class="app-modal app-modal-priority">
+        this.view = `<section id="select-page-modal" class="app-modal app-modal-priority-2">
         <div class="app-modal-container">
         
             <a class="app-modal-close" toggle-select-page-modal>

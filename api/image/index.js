@@ -95,6 +95,7 @@ router.post('/upload', async (req, res) => {
                 json.push({
                     name: files[x],
                     url: `files/${files[x]}`,
+                    thumb: `files/small/${files[x]}`,
                     preview: `/files/${files[x]}`,
                     size: stats.size,
                     dt: stats.birthtimeMs,
