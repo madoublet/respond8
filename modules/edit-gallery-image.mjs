@@ -157,6 +157,7 @@ export class EditGalleryImageModal {
       this.image.text = document.querySelector('#edit-gallery-image-text').value 
       this.image.src = document.querySelector('#edit-gallery-image-src').value 
       this.image.href = document.querySelector('#edit-gallery-image-href').value 
+      this.image.display = '/' + document.querySelector('#edit-gallery-image-src').value 
 
       // edit field
       window.dispatchEvent(new CustomEvent('app.updateGalleryImage', {detail: {image: this.image, index: this.index}}))

@@ -1,5 +1,6 @@
 const express = require('express'),
     router = express.Router(),
+    path = require('path'),
     fs = require('fs'),
     fse = require('fs-extra'),
     cheerio = require('cheerio'),
@@ -88,19 +89,25 @@ router.post('/upload', async (req, res) => {
         for(x=0; x<files.length; x++) {
 
             // get stats for file
-            let stats = fs.statSync(`${global.appRoot}/site/files/${files[x]}`)
+            let stats = fs.statSync(`${global.appRoot}/site/files/${files[x]}`),
+                ext = path.extname(`${global.appRoot}/site/files/${files[x]}`)
 
             if(stats.isFile()) {
 
-                json.push({
-                    name: files[x],
-                    url: `files/${files[x]}`,
-                    thumb: `files/small/${files[x]}`,
-                    preview: `/files/${files[x]}`,
-                    size: stats.size,
-                    dt: stats.birthtimeMs,
-                    dtFriendly: stats.birthtime
-                })
+                // check for image
+                if(ext == '.jpg' || ext =='.jpeg' || ext == '.png' || ext == '.gif' || ext == '.svg') {
+
+                    json.push({
+                        name: files[x],
+                        url: `files/${files[x]}`,
+                        thumb: `files/small/${files[x]}`,
+                        preview: `/files/${files[x]}`,
+                        size: stats.size,
+                        dt: stats.birthtimeMs,
+                        dtFriendly: stats.birthtime
+                    })
+
+                }
             }
         }
         

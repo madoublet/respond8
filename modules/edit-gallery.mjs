@@ -249,7 +249,7 @@ export class EditGalleryModal {
                     index = Array.from(element.parentNode.children).indexOf(element)
 
                 // edit image
-                window.dispatchEvent(new CustomEvent('app.editGalleryImage', {detail: {image: context.images[index], type: context.type, index: index}}))
+                window.dispatchEvent(new CustomEvent('app.editGalleryImage', {detail: {image: context.images[index], type: context.type, index: context.index}}))
 
               }
               else if(e.target.classList.contains('remove-item')) {
