@@ -9,7 +9,7 @@ export class Edit {
     constructor() {
 
         this.frame = document.querySelector('#edit-frame')
-        this. page = '/index.html'
+        this.page = '/index.html'
         this.viewPage = document.querySelector('#view-page')
         this.viewMobile = document.querySelector('#view-mobile')
         this.viewSettings = document.querySelector('#view-settings')

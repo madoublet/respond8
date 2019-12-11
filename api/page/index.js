@@ -86,6 +86,48 @@ router.post('/save', async (req, res) => {
 })
 
 /**
+  * /api/page/retrieve
+  * @param {Object} req - http://expressjs.com/api.html#req
+  * @param {Object} res - http://expressjs.com/api.html#res
+  * @param {Object} next - required for middleware
+  */
+ router.post('/retrieve', async (req, res) => {
+
+    // auth
+    if(!req.user) {
+        res.status(400).send('Not authenticated')
+        return
+    }
+
+    let body = req.body,
+        url = body.url
+
+    console.log('[debug] list', req.body)
+
+    try {
+
+        // get json
+        let json = fs.readFileSync(`${global.appRoot}/site/data/pages.json`, 'utf8'),
+            objs = JSON.parse(json)
+
+        for(let x=0; x<objs.length; x++) {
+            if(objs[x].url == url) {
+                // send 200       
+                res.setHeader('Content-Type', 'application/json')
+                res.status(200).send(JSON.stringify(objs[x]))
+            }
+        }
+        
+        res.status(400).send('No page found')
+
+    }
+    catch(e) {
+        res.status(400).send('There was an error saving the page')
+    }
+
+})
+
+/**
   * /api/page/elements.list
   * @param {Object} req - http://expressjs.com/api.html#req
   * @param {Object} res - http://expressjs.com/api.html#res

@@ -16,6 +16,7 @@ import { EditFormFieldModal } from '/modules/edit-form-field.mjs'
 import { EditGalleryModal } from '/modules/edit-gallery.mjs'
 import { EditGalleryImageModal } from '/modules/edit-gallery-image.mjs'
 import { EditVideoModal } from '/modules/edit-video.mjs'
+import { PageSettingsModal } from '/modules/page-settings.mjs'
 
 // setup app
 let app = {}
@@ -42,7 +43,8 @@ app.setup = function() {
         selectPageModal = new SelectPageModal(),
         editFormFieldModal = new EditFormFieldModal(),
         editGalleryImageModal = new EditGalleryImageModal(),
-        editVideo = new EditVideoModal()
+        editVideo = new EditVideoModal(),
+        pageSettingsModal = new PageSettingsModal
 
 }
 
