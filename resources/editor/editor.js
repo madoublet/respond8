@@ -1599,6 +1599,14 @@ editor = (function() {
                 e.preventDefault();
 
             }
+            else if (e.target.classList.contains('col')) {
+              let block = e.target.parentNode;
+              editor.showBlockMenu(block);
+            }
+            else if (e.target.hasAttribute('editor-block')) {
+              let block = e.target;
+              editor.showBlockMenu(block);
+            }
             else if (e.target.classList.contains('editor-block-edit')) {
               let block = editor.findParentBySelector(e.target, '[editor-block]');
 

@@ -1,7 +1,6 @@
 const express = require('express'),
     router = express.Router(),
     fs = require('fs'),
-    fsp = require('fs').promises,
     fse = require('fs-extra'),
     bcrypt = require('bcrypt'),
     path = require('path'),
@@ -57,6 +56,7 @@ router.post('/', async (req, res) => {
             fse.ensureDirSync(`${global.appRoot}/data/`)
             fse.ensureDirSync(`${global.appRoot}/site/`)
             fse.ensureDirSync(`${global.appRoot}/site/data/`)
+            fse.ensureDirSync(`${global.appRoot}/site/components/`)
             fse.ensureDirSync(`${global.appRoot}/site/templates/`)
             fse.ensureDirSync(`${global.appRoot}/site/layouts/`)
             fse.ensureDirSync(`${global.appRoot}/site/css/`)
@@ -65,6 +65,7 @@ router.post('/', async (req, res) => {
 
             // copy layouts, css, js, data
             fse.copySync(`${global.appRoot}/resources/site/layouts`, `${global.appRoot}/site/layouts`)
+            fse.copySync(`${global.appRoot}/resources/site/components`, `${global.appRoot}/site/components`)
             fse.copySync(`${global.appRoot}/resources/site/css`, `${global.appRoot}/site/css`)
             fse.copySync(`${global.appRoot}/resources/site/js`, `${global.appRoot}/site/js`)
             fse.copySync(`${global.appRoot}/resources/site/data`, `${global.appRoot}/site/data`)
@@ -72,15 +73,18 @@ router.post('/', async (req, res) => {
             // write variables
             file = `${global.appRoot}/site/css/variables.css`
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, variables)
+            fs.writeFileSync(file, variables, 'utf8')
 
-            files = await fsp.readdir(`${global.appRoot}/site/css/`)
+            files = fs.readdirSync(`${global.appRoot}/site/css/`)
+            
             content = ''
 
             // combine css files
             for(let x=0; x<files.length; x++) {
                 console.log(`[app] reading ${global.appRoot}/site/css/${files[x]}`);
-                let css = await fsp.readFile(`${global.appRoot}/site/css/${files[x]}`, 'utf8')
+
+                let css = fs.readFileSync(`${global.appRoot}/site/css/${files[x]}`, 'utf8')
+
                 content += css
             }
 
@@ -89,32 +93,36 @@ router.post('/', async (req, res) => {
             // write site.all.css
             file = `${global.appRoot}/site/css/site.all.css`
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, uglifycss.processString(content, { maxLineLen: 500, expandVars: false }))
+            fs.writeFileSync(file, uglifycss.processString(content, { maxLineLen: 500, expandVars: false }), 'utf8')
 
             // write local site.json
             file = `${global.appRoot}/data/site.json`
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, JSON.stringify(site))
+
+            fs.writeFileSync(file, JSON.stringify(site), 'utf8')
 
             // write builder.json
             file = `${global.appRoot}/site/data/builder.json`
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, JSON.stringify({
-                                            'json': json,
-                                            'variables': variables,
-                                            'html': html,
-                                            'editorHTML': editorHTML
-                                        }))
+      
+            fs.writeFileSync(file, JSON.stringify({
+                                        'json': json,
+                                        'variables': variables,
+                                        'html': html,
+                                        'editorHTML': editorHTML
+                                    }), 'utf8')
             
             // write index.html
             file = `${global.appRoot}/site/index.html`
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, html)
+
+            fs.writeFileSync(file, html, 'utf8')
 
             // create about
             source = `${global.appRoot}/resources/site/placeholder/about.html`
             file = `${global.appRoot}/site/about.html`
-            content = await fsp.readFile(source, 'utf8')
+
+            content = fs.readFileSync(source, 'utf8')
 
             page = template
             page = common.replaceAll(page, '{{page.title}}', 'About');
@@ -128,12 +136,13 @@ router.post('/', async (req, res) => {
 
             // write about
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, page)
+            fs.writeFileSync(file, page, 'utf8')
 
             // create gallery
             source = `${global.appRoot}/resources/site/placeholder/gallery.html`
             file = `${global.appRoot}/site/gallery.html`
-            content = await fsp.readFile(source, 'utf8')
+
+            content = fs.readFileSync(source, 'utf8')
 
             page = template
             page = common.replaceAll(page, '{{page.title}}', 'Gallery');
@@ -147,12 +156,12 @@ router.post('/', async (req, res) => {
 
             // write gallery
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, page)
+            fs.writeFileSync(file, page, 'utf8')
 
             // write default.html
             file = `${global.appRoot}/site/templates/default.html`
             console.log(`[app] writing ${file}`)
-            await fsp.writeFile(file, template)
+            fs.writeFileSync(file, template, 'utf8')
 
             res.status(200).send('Site created successfully')
 

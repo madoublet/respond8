@@ -78,12 +78,7 @@ export class PageSettingsModal {
     
             <div class="app-modal-form-group">
               <label>Template</label>
-              <select id="add-page-template" name="template"></select>
-            </div>
-    
-            <div class="app-modal-form-group">
-                <label>Category</label>
-                <select id="add-page-category" name="category"></select>
+              <select id="page-settings-template" name="template"></select>
             </div>
     
             <div class="app-modal-form-group">
@@ -124,8 +119,41 @@ export class PageSettingsModal {
         this.url = (this.url[0] == '/') ? this.url.substr(1) : this.url
 
         // handle events
-        this.fill()
+        this.setup()
         this.setupEvents()
+    }
+
+    /*
+     * Setup the data
+     */
+    setup() {
+      let data = {},
+            context = this
+      
+      // post form
+      var xhr = new XMLHttpRequest()
+      xhr.open('POST', '/api/page/templates/list', true)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(JSON.stringify(data))
+
+      xhr.onload = function() {
+          if (xhr.status >= 200 && xhr.status < 400) {
+              let arr = JSON.parse(xhr.responseText)
+
+              // fill array
+              for(let x=0; x<arr.length; x++) {
+                let option = document.createElement("option");
+                option.text = arr[x].charAt(0).toUpperCase() + arr[x].substr(1).toLowerCase();
+                option.value = arr[x]
+
+                context.modal.querySelector('#page-settings-template').appendChild(option)
+              }
+
+              context.fill()
+              
+          }
+      }
+      // end xhr
     }
 
     /*
@@ -147,6 +175,17 @@ export class PageSettingsModal {
               let obj = JSON.parse(xhr.responseText)
 
               context.modal.querySelector('#page-settings-name').value = obj.name || ''
+              context.modal.querySelector('#page-settings-callout').value = obj.callout || ''
+              context.modal.querySelector('#page-settings-description').value = obj.description || ''
+              context.modal.querySelector('#page-settings-keywords').value = obj.keywords || ''
+              context.modal.querySelector('#page-settings-tags').value = obj.tags || ''
+              context.modal.querySelector('#page-settings-location').value = obj.location || ''
+              context.modal.querySelector('#page-settings-image').value = obj.image || ''
+              context.modal.querySelector('#page-settings-language').value = obj.language || ''
+              context.modal.querySelector('#page-settings-direction').value = obj.direction || ''
+              context.modal.querySelector('#page-settings-template').value = obj.template || 'default'
+              context.modal.querySelector('#page-settings-custom-header').value = obj.customHeader || ''
+              context.modal.querySelector('#page-settings-custom-footer').value = obj.customFooter || ''
               
           }
       }
@@ -189,9 +228,45 @@ export class PageSettingsModal {
     }
 
     /*
-     * Edits the layout
+     * Edits the settings
      */
     edit() {
-      this.toggleModal()
+
+      let data = {
+        url: this.url,
+        name: this.modal.querySelector('#page-settings-name').value,
+        callout: this.modal.querySelector('#page-settings-callout').value,
+        description: this.modal.querySelector('#page-settings-description').value,
+        keywords: this.modal.querySelector('#page-settings-keywords').value,
+        tags: this.modal.querySelector('#page-settings-tags').value,
+        location: this.modal.querySelector('#page-settings-location').value,
+        image: this.modal.querySelector('#page-settings-image').value,
+        language: this.modal.querySelector('#page-settings-language').value,
+        direction: this.modal.querySelector('#page-settings-direction').value,
+        template: this.modal.querySelector('#page-settings-template').value,
+        customHeader: this.modal.querySelector('#page-settings-custom-header').value,
+        customFooter: this.modal.querySelector('#page-settings-custom-footer').value
+      }, 
+      context = this
+
+      // post form
+      var xhr = new XMLHttpRequest()
+      xhr.open('POST', '/api/page/settings', true)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(JSON.stringify(data))
+
+      shared.toast.show('loading', 'Updating settings...', false)
+
+      xhr.onload = function() {
+          if (xhr.status >= 200 && xhr.status < 400) {
+              shared.toast.show('success', 'Settings updated!', true)
+              context.toggleModal()
+          }
+          else {
+              shared.toast.show('failure', 'There was an error saving the file', true)
+          }
+      }
+      // end xhr
+      
     }
 }

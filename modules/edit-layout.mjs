@@ -41,6 +41,58 @@ export class EditLayoutModal {
               </div>
 
               <div class="app-modal-form-group">
+                <label>Background Image <a id="edit-layout-select-image">Select Image</a></label>
+                <input id="edit-layout-background-image" type="text" maxlength="128" placeholder="" name="backgroundImage">
+              </div>
+
+              <div class="app-modal-form-group">
+                <label>Background Size</label>
+                <select id="edit-layout-background-size" name="backgroundSize">
+                    <option></option>
+                    <option value="cover">Cover</option>
+                    <option value="auto">Auto</option>
+                    <option value="contain">Contain</option>
+                </select>
+              </div>
+
+              <div class="app-modal-form-group">
+                <label>Background Position</label>
+                <select id="edit-layout-background-position" name="backgroundPosition">
+                    <option value=""></option>
+                    <option value="center center">Center Center</option>
+                    <option value="top left">Top Left</option>
+                    <option value="top center">Top Center</option>
+                    <option value="top right">Top Right</option>
+                    <option value="center left">Center Left</option>
+                    <option value="center center">Center Center</option>
+                    <option value="center right">Center Right</option>
+                    <option value="left left">Left Left</option>
+                    <option value="left center">Left Center</option>
+                    <option value="left right">Left Right</option>
+                </select>
+              </div>
+
+              <div class="app-modal-form-group">
+                  <label>Background Repeat</label>
+                  <select id="edit-layout-background-repeat" name="backgroundRepeat">
+                      <option value=""></option>
+                      <option value="no-repeat">No-Repeat</option>
+                      <option value="repeat">Repeat</option>
+                      <option value="repeat-x">Repeat-X</option>
+                      <option value="repeat-y">Repeat-Y</option>
+                  </select>
+              </div>
+
+              <div class="app-modal-form-group">
+                <div class="color-picker-group">
+                  <label>Background Color <a>Reset</a></label>
+                  <div class="color-picker-wrapper">
+                    <input type="color" id="edit-layout-background-color" name="backgroundColor">
+                  </div>
+                </div>
+              </div>
+
+              <div class="app-modal-form-group">
                 <label>Horizontal Padding (left and right)</label>
                 <select id="edit-layout-horizontal-padding" name="horizontalPadding">
                     <option value="none">None</option>
@@ -89,58 +141,6 @@ export class EditLayoutModal {
                 </select>
               </div>
 
-              <div class="app-modal-form-group">
-                <label>Background Image <a>Select Image</a></label>
-                <input id="edit-layout-background-image" type="text" maxlength="128" placeholder="" name="backgroundImage">
-              </div>
-
-              <div class="app-modal-form-group">
-                <label>Background Size</label>
-                <select id="edit-layout-background-size" name="backgroundSize">
-                    <option></option>
-                    <option value="cover">Cover</option>
-                    <option value="auto">Auto</option>
-                    <option value="contain">Contain</option>
-                </select>
-              </div>
-
-              <div class="app-modal-form-group">
-                <label>Background Position</label>
-                <select id="edit-layout-background-position" name="backgroundPosition">
-                    <option value=""></option>
-                    <option value="center center">Center Center</option>
-                    <option value="top left">Top Left</option>
-                    <option value="top center">Top Center</option>
-                    <option value="top right">Top Right</option>
-                    <option value="center left">Center Left</option>
-                    <option value="center center">Center Center</option>
-                    <option value="center right">Center Right</option>
-                    <option value="left left">Left Left</option>
-                    <option value="left center">Left Center</option>
-                    <option value="left right">Left Right</option>
-                </select>
-              </div>
-
-              <div class="app-modal-form-group">
-                  <label>Background Repeat</label>
-                  <select id="edit-layout-background-repeat" name="backgroundRepeat">
-                      <option value=""></option>
-                      <option value="no-repeat">No-Repeat</option>
-                      <option value="repeat">Repeat</option>
-                      <option value="repeat-x">Repeat-X</option>
-                      <option value="repeat-y">Repeat-Y</option>
-                  </select>
-              </div>
-
-              <div class="app-modal-form-group">
-                <div class="color-picker-group">
-                  <label>Background Color <a>Reset</a></label>
-                  <div class="color-picker-wrapper" [style.background-color]="model.backgroundColor">
-                    <input type="color" id="edit-layout-background-color" name="backgroundColor">
-                  </div>
-                </div>
-              </div>
-
             </div>  
         
             <div class="app-modal-actions">
@@ -154,6 +154,8 @@ export class EditLayoutModal {
 
         this.properties = {}
         this.attributes = {}
+
+        this.colorChanged = false
 
         // append view to DOM
         document.body.insertAdjacentHTML('beforeend', this.view)
@@ -180,12 +182,23 @@ export class EditLayoutModal {
             })
         }
 
+        // handle select image
+        this.modal.querySelector('#edit-layout-select-image').addEventListener('click', function(e) {
+          window.dispatchEvent(new CustomEvent('app.selectImage', {detail: {target: '#edit-layout-background-image'}}))
+        })
+
         this.form.addEventListener('submit', function(e) {
             e.preventDefault()
             context.edit()
             return false
         })
 
+        // check color change
+        document.querySelector('#edit-layout-background-color').addEventListener('change', function(e) {
+          context.colorChanged = true
+        })
+
+        // handle editor event
         window.addEventListener('editor.event', data => {
 
           console.log('[edit.layout] detail', data.detail)
@@ -217,6 +230,9 @@ export class EditLayoutModal {
      * Toggles the slide-in modal
      */
     toggleModal() {
+
+        this.colorChanged = false
+
         if(this.modal.hasAttribute('active')) {
            this.modal.removeAttribute('active')     
         }
@@ -232,13 +248,19 @@ export class EditLayoutModal {
       this.properties.id = document.querySelector('#edit-layout-id').value 
       this.properties.cssClass = document.querySelector('#edit-layout-class').value 
 
+      let color = ''
+
+      if(this.colorChanged == true) {
+        color = document.querySelector('#edit-layout-background-color').value
+      }
+
       this.properties.width = document.querySelector('#edit-layout-width').value
       this.properties.horizontalPadding = document.querySelector('#edit-layout-horizontal-padding').value
       this.properties.verticalPadding = document.querySelector('#edit-layout-vertical-padding').value
       this.properties.topVerticalPadding = document.querySelector('#edit-layout-top-vertical-padding').value
       this.properties.bottomVerticalPadding = document.querySelector('#edit-layout-bottom-vertical-padding').value
       this.properties.backgroundImage = document.querySelector('#edit-layout-background-image').value
-      this.properties.backgroundColor = document.querySelector('#edit-layout-background-color').value
+      this.properties.backgroundColor = color
       this.properties.backgroundPosition = document.querySelector('#edit-layout-background-position').value
       this.properties.backgroundRepeat = document.querySelector('#edit-layout-background-repeat').value
       this.properties.backgroundSize = document.querySelector('#edit-layout-background-size').value

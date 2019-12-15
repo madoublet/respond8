@@ -1,7 +1,7 @@
 const express = require('express'),
     router = express.Router(),
+    path = require('path'),
     fs = require('fs'),
-    fse = require('fs-extra'),
     cheerio = require('cheerio'),
     common = require('../common.js')
 
@@ -81,6 +81,58 @@ router.post('/save', async (req, res) => {
     }
     catch(e) {
         res.status(400).send('There was an error saving the page')
+    }
+
+})
+
+/**
+  * /api/page/templates/list
+  * @param {Object} req - http://expressjs.com/api.html#req
+  * @param {Object} res - http://expressjs.com/api.html#res
+  * @param {Object} next - required for middleware
+  */
+ router.post('/templates/list', async (req, res) => {
+
+    // auth
+    if(!req.user) {
+        res.status(400).send('Not authenticated')
+        return
+    }
+
+    let body = req.body
+
+    console.log('[debug] list templates', req.body)
+
+    try {
+
+        let files = fs.readdirSync(`${global.appRoot}/site/templates/`), arr = []
+
+        for(let x=0; x<files.length; x++) {
+
+            // get stats for file
+            let stats = fs.statSync(`${global.appRoot}/site/templates/${files[x]}`),
+                ext = path.extname(`${global.appRoot}/site/templates/${files[x]}`),
+                template = ''
+
+            if(stats.isFile()) {
+
+                // check for image
+                if(ext == '.html') {
+                    template = files[x].replace('.html', '')
+
+                    arr.push(template)
+                }
+            }
+        }
+        
+        // send 200       
+        res.setHeader('Content-Type', 'application/json')
+        res.status(200).send(arr)
+
+    }
+    catch(e) {
+        console.log(e)
+        res.status(400).send('There was an error listing the templates')
     }
 
 })
@@ -190,9 +242,7 @@ router.post('/save', async (req, res) => {
         url = body.url,
         type = body.type,
         description = body.description,
-        template = 'default',
-        parts = url.split('/'),
-        base = ''
+        template = 'default'
 
     // clear leading slash
     if (url.charAt(0) == "/") url = url.substr(1)
@@ -203,16 +253,32 @@ router.post('/save', async (req, res) => {
     // add html extension
     url = url += '.html'
 
-    // setup the base
-    if(parts.length > 1) {
-        for(let x=1; x<parts.length; x++) {
-            base += '../';
-        }
-    }
-
     console.log('[debug] save', req.body)
 
     try {
+    
+        // settings
+        let settings = {
+            "name": name,
+            "callout": '',
+            "description": description,
+            "url": url,
+            "type": type,
+            "template": template,
+            "text": "",
+            "keywords": "",
+            "tags": "",
+            "image": "",
+            "location": "",
+            "language": "en",
+            "direction": "ltr",
+            "firstName": firstName,
+            "lastName": lastName,
+            "lastModifiedBy": firstName + ' ' + lastName,
+            "lastModifiedDate": (new Date()).toUTCString(),
+            "customHeader": "",
+            "customFooter": ""
+        }
 
         // get json
         let json = fs.readFileSync(`${global.appRoot}/site/data/pages.json`, 'utf8')
@@ -228,80 +294,97 @@ router.post('/save', async (req, res) => {
             }
         }
 
-        // push page
-        pages.push({
-            "name": name,
-            "description": description,
-            "url": url,
-            "template": template,
-            "text": "",
-            "keywords": "",
-            "tags": "",
-            "image": "",
-            "location": "",
-            "language": "",
-            "direction": "",
-            "firstName": firstName,
-            "lastName": lastName,
-            "lastModifiedBy": firstName + ' ' + lastName,
-            "lastModifiedDate": (new Date()).toUTCString(),
-            "customHeader": "",
-            "customFooter": ""
-        })
-
-        // retrieve template
-        let html = fs.readFileSync(`${global.appRoot}/site/templates/${template}.html`, 'utf8')
-
-        // retrieve content
-        let content = fs.readFileSync(`${global.appRoot}/site/layouts/${type}.html`, 'utf8')
-
-        // replace all meta data
-        html = html.replace(/{{page.content}}/g, content)
-        html = html.replace(/{{page.title}}/g, name)
-        html = html.replace(/{{page.name}}/g, name)
-        html = html.replace(/{{page.url}}/g, url)
-        html = html.replace(/{{page.description}}/g, description)
-        html = html.replace(/{{page.keywords}}/g, '')
-        html = html.replace(/{{page.tags}}/g, '')
-        html = html.replace(/{{page.image}}/g, '')
-        html = html.replace(/{{page.location}}/g, '')
-        html = html.replace(/{{page.language}}/g, 'en')
-        html = html.replace(/{{page.direction}}/g, 'ltr')
-        html = html.replace(/{{page.firstName}}/g, firstName)
-        html = html.replace(/{{page.lastName}}/g, lastName)
-        html = html.replace(/{{page.lastModifiedBy}}/g, firstName + ' ' + lastName)
-        html = html.replace(/{{page.lastModifiedDate}}/g, (new Date()).toUTCString())
-        html = html.replace(/{{page.customHeader}}/g, '')
-        html = html.replace(/{{page.customFooter}}/g, '')
-        html = html.replace(/{{version}}/g, Date.now())
-
-        let $ = cheerio.load(html);
-
-        // set base value
-        $('base').attr('href', base);
-        
-        // save content
-        html = $.html();
-
-        // get directory
-        let dir = url.substring(0, url.lastIndexOf("/")+1)
-
-        console.log('[debug] directory', `${global.appRoot}/site/${dir}`)
-
-        // make sure it exists
-        fse.ensureDirSync(`${global.appRoot}/site/${dir}`)
-
-        console.log('[debug] file', `${global.appRoot}/site/${url}`)
-
-        // save html file
-        fs.writeFileSync(`${global.appRoot}/site/${url}`, html, 'utf8')
-
-        // save json file
-        fs.writeFileSync(`${global.appRoot}/site/data/pages.json`, JSON.stringify(pages), 'utf8')
+        // publish page
+        common.publishPage(settings)
         
         // send 200       
         res.setHeader('Content-Type', 'application/json')
         res.status(200).send('Ok')
+
+    }
+    catch(e) {
+        console.log(e)
+        res.status(400).send('There was an error saving the page')
+    }
+
+})
+
+/**
+  * /api/page/settings
+  * @param {Object} req - http://expressjs.com/api.html#req
+  * @param {Object} res - http://expressjs.com/api.html#res
+  * @param {Object} next - required for middleware
+  */
+ router.post('/settings', async (req, res) => {
+
+    // auth
+    if(!req.user) {
+        res.status(400).send('Not authenticated')
+        return
+    }
+
+    let user = common.findUser(req.user.email),
+        firstName = "Default",
+        lastName = "User"
+
+    // set first and last name
+    if(user.firstName) firstName = user.firstName
+    if(user.lastName) lastName = user.lastName
+
+    console.log('[debug] user', req.user)
+
+    let body = req.body,
+        url = body.url,
+        name = body.name,
+        callout = body.callout,
+        description = body.description,
+        keywords = body.keywords,
+        tags = body.tags,
+        location = body.location,
+        image = body.image,
+        language = body.language,
+        direction = body.direction,
+        template = body.template,
+        customHeader = body.customHeader,
+        customFooter = body.customFooter,
+        settings = null
+
+    try {
+
+        // get json
+        let json = fs.readFileSync(`${global.appRoot}/site/data/pages.json`, 'utf8'),
+            objs = JSON.parse(json)
+
+        for(let x=0; x<objs.length; x++) {
+            if(objs[x].url == url) {
+
+                // set settings
+                settings = objs[x]
+
+                // update settings
+                settings.name = name
+                settings.callout = callout
+                settings.description = description
+                settings.keywords = keywords
+                settings.tags = tags
+                settings.location = location
+                settings.image = image
+                settings.language = language
+                settings.direction = direction
+                settings.template = template
+                settings.customHeader = customHeader
+                settings.customFooter = customFooter
+
+                // republish
+                common.publishPage(settings)
+
+                // send 200       
+                res.setHeader('Content-Type', 'application/json')
+                res.status(200).send(JSON.stringify(settings))
+            }
+        }
+        
+        res.status(400).send('No page found')
 
     }
     catch(e) {

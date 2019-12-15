@@ -34,9 +34,15 @@
     transform: translateX(0);
 }
 
+/* app-slide-in-modal-header */
+.app-slide-in-modal-header {
+    position: relative;
+    width: 100%;
+}
+
 .app-slide-in-modal-header input[type=search] {
     margin: 2px;
-    border: 1px solid #f0f0f0;
+    border: 1px solid #f9f9fb;
     border-radius: 2px;
     width: calc(100% - 48px);
     height: 36px;
@@ -55,10 +61,9 @@
 
 .app-slide-in-modal-header .add-button {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 5px;
+    right: 5px;
     border: none;
-    background-color: #f0f0f0;
     border-radius: 2px;
     height: 36px;
     width: 42px;
@@ -83,17 +88,17 @@
 /* list */
 .app-slide-in-modal-list-item {
     position: relative;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f9f9fb;
     padding: 0;
     cursor: pointer;
 }
 
 .app-slide-in-modal-list-item:first-child {
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid #f9f9fb;
 }
 
 .app-slide-in-modal-list-item:hover {
-    background-color: #f8f8f8;
+    background-color: #f9f9fb;
 }
 
 .app-slide-in-modal-list-item>a {
@@ -104,7 +109,7 @@
 
 .app-slide-in-modal-list-item h3 {
     color: #111;
-    font-size: 1em;
+    font-size: 13px;
     margin: 0;
     padding: 0;
     font-weight: bold;
@@ -132,4 +137,59 @@
 
 .app-slide-in-modal-list-item:hover .material-icons {
     opacity: 1;
+}
+
+.app-slide-in-modal #pages-list {
+    width: 100%;
+    height: calc(100% - 100px);
+    overflow-y: auto;
+}
+
+/* pages */
+.app-slide-in-modal .app-slide-in-modal-pages {
+    padding: 15px 15px 15px 50px;
+    width: calc(100% - 70px);
+    text-align: left;
+    font-size: 13px;
+    background-color: #fff;
+    color: #111;
+    display: block;
+    font-weight: bold;
+}
+
+.app-slide-in-modal .app-slide-in-modal-pages i {
+    position: absolute;
+    top: 16px;
+    left: 15px;
+    color: #888;
+    font-size: 17px;
+}
+
+.app-slide-in-modal .app-slide-in-modal-pages:hover i {
+    color: #2EBF91;
+}
+
+/* menus */
+.app-slide-in-modal .app-slide-in-modal-menus {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 15px 15px 15px 50px;
+    width: calc(100% - 65px);
+    text-align: left;
+    border-top: 1px solid #f0f0f0;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #2EBF91;
+    color: #fff;
+    display: block;
+    font-weight: bold;
+}
+
+.app-slide-in-modal .app-slide-in-modal-menus i {
+    position: absolute;
+    top: 16px;
+    left: 15px;
+    color: #fff;
+    font-size: 17px;
 }

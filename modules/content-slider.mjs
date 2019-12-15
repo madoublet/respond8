@@ -10,9 +10,12 @@ export class ContentSlider {
 
         // setup view
         this.view = `<section id="content-slide-in-modal" class="app-slide-in-modal">
+
                         <div>
+
                             <div class="app-slide-in-modal-header">
-                                <input type="search" placeholder="Search for page">
+                                <a class="app-slide-in-modal-pages" show-menus-modal><i class="material-icons">subject</i>Pages</a>
+                    
                                 <button class="add-button" toggle-add-page-modal>
                                     <i class="material-icons">add</i>
                                 </button>
@@ -21,6 +24,8 @@ export class ContentSlider {
 
                             <div id="pages-list" class="app-slide-in-modal-list"></div>
                             <!-- /app-slide-in-modal-list -->
+
+                            <a class="app-slide-in-modal-menus" show-menus-modal><i class="material-icons">menu</i>Menus</a>
                             
                         </div>
                     </section>

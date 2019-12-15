@@ -1,0 +1,9 @@
+<div class="categories-list">
+{{#each pages}}
+    {{#startsWith "category/" url}}
+    <a class="category-item" href="{{url}}" style="background-image: url({{image}}); background-size: cover;">
+        {{name}}
+    </a>
+    {{/startsWith}}
+{{/each}}
+</div>
