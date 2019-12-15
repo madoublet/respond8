@@ -53,7 +53,7 @@ export class PageSettingsModal {
             </div>
               
             <div class="app-modal-form-group">
-              <label>Image <a (click)="showSelect()">Select</a></label>
+              <label>Image <a id="page-settings-select-image">Select</a></label>
               <input id="page-settings-image" type="text" maxlength="128" name="photo">
             </div>
     
@@ -211,6 +211,11 @@ export class PageSettingsModal {
             e.preventDefault()
             context.edit()
             return false
+        })
+
+        // handle select image
+        this.modal.querySelector('#page-settings-select-image').addEventListener('click', function(e) {
+          window.dispatchEvent(new CustomEvent('app.selectImage', {detail: {target: '#page-settings-image'}}))
         })
 
     }
