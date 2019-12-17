@@ -23,19 +23,22 @@ export class EditFormModal {
               <li><a data-tab="edit-form-settings">Settings</a></li>
             </ul>
 
-            <div id="edit-form-fields" class="app-modal-tab">
-            
-              <div class="app-modal-list app-modal-list-has-tabs"></div>            
+            <form>
 
-              <button id="button-add-form-field" class="circle-button">
-                  <i class="material-icons">add</i>
-              </button>
+            <div id="edit-form-fields" class="app-modal-tab">
+
+              <button id="button-add-form-field" class="app-modal-add-button">Add Form Field</button>
+            
+              <div class="app-modal-list app-modal-list-has-tabs"></div> 
+              
+              <div class="app-modal-actions">
+                <button type="submit">Update</button>
+              </div>
 
             </div>
 
             <div id="edit-form-settings" class="app-modal-tab" hidden>
 
-              <form>
                 <div class="app-modal-form app-modal-form-has-tabs">
             
                   <div class="app-modal-form-group">
@@ -63,8 +66,10 @@ export class EditFormModal {
                 <div class="app-modal-actions">
                   <button type="submit">Update</button>
                 </div>
-              </form>  
+              
             </div>
+
+            </form>
 
         </div>
         </section>`
@@ -274,7 +279,6 @@ export class EditFormModal {
 
                 // remove and update
                 context.remove(index)
-                context.update()
                 context.updateList()
 
               }
@@ -290,7 +294,6 @@ export class EditFormModal {
           handle: '.drag-handle',
           onEnd: function (e) {
               context.move(e.oldIndex, e.newIndex)
-              context.update()
               //context.updateList()
           },
 
@@ -320,7 +323,6 @@ export class EditFormModal {
           context.fields[data.detail.index] = data.detail.field
 
           // update
-          context.update()
           context.updateList()
           
         })
@@ -377,8 +379,9 @@ export class EditFormModal {
           context.fields.push(field);
 
           // update ui
-          context.update()
           context.updateList()
+
+          e.preventDefault()
         })
 
         // setup tabs

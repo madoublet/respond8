@@ -25,7 +25,7 @@ export class ContentSlider {
                             <div id="pages-list" class="app-slide-in-modal-list"></div>
                             <!-- /app-slide-in-modal-list -->
 
-                            <a class="app-slide-in-modal-menus" show-menus-modal><i class="material-icons">menu</i>Menus</a>
+                            <a class="app-slide-in-modal-menus" toggle-edit-menu-modal><i class="material-icons">menu</i>Menus</a>
                             
                         </div>
                     </section>

@@ -54,6 +54,18 @@ module.exports = {
     },
 
     /**
+     * Retrieves pages
+     * @param {String} email
+     */
+    retrievePages: function() {
+
+      let json = fs.readFileSync(`${global.appRoot}/site/data/pages.json`, 'utf8')
+
+      return JSON.parse(json)
+
+    },
+
+    /**
      * Publishes a page
      * @param {String} email
      */

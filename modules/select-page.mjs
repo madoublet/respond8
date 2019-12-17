@@ -18,7 +18,7 @@ export class SelectPageModal {
 
             <h2>Select Page</h2>
         
-            <div class="app-modal-list"></div>
+            <div class="app-modal-list app-modal-solo-list"></div>
 
         </div>
         </section>`

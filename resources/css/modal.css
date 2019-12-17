@@ -200,6 +200,25 @@
   }
 
 /* button */
+.app-modal .app-modal-add-button {
+    margin: 20px;
+    display: block;
+    width: calc(100% - 40px);
+    background: #fff;
+    color: #2EBF91;
+    border: 1px solid #2EBF91;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.app-modal .app-modal-add-button:hover {
+    box-shadow: 0 0 10px #f0f0f0;
+}
+
+
 .app-modal button[type=submit] {
     background-image: linear-gradient(-135deg, #2EBF91 0%, #8360C3 100%);
     height: 40px;
@@ -211,12 +230,12 @@
     font-size: 13px;
     color: #fff;
     box-shadow: 0 0 5px #bbb;
+    cursor: pointer;
 }
 
-  .app-modal .circle-button {
-    bottom: 35px;
-    right: 20px;
-  }
+    .app-modal button[type=submit]:hover {
+        box-shadow: 0 0 10px #aaa;
+    }
 
   .app-modal-actions {
       position: absolute;
@@ -314,12 +333,16 @@
 .app-modal .app-modal-list {
     margin-top: 20px;
     border-bottom: 1px solid #f0f0f0;
-    height: 450px;
+    height: 360px;
     overflow-y: auto;
 }
 
+.app-modal .app-modal-list.app-modal-solo-list {
+    height: 450px;
+}
+
 .app-modal .app-modal-list.app-modal-list-has-tabs {
-    height: 400px;
+    height: 315px;
 }
 
 .app-modal .app-modal-list.app-modal-list-compressed {

@@ -17,6 +17,8 @@ import { EditGalleryModal } from '/modules/edit-gallery.mjs'
 import { EditGalleryImageModal } from '/modules/edit-gallery-image.mjs'
 import { EditVideoModal } from '/modules/edit-video.mjs'
 import { PageSettingsModal } from '/modules/page-settings.mjs'
+import { EditMenuModal } from '/modules/edit-menu.mjs'
+import { EditMenuItemModal } from '/modules/edit-menu-item.mjs'
 
 // setup app
 let app = {}
@@ -44,7 +46,9 @@ app.setup = function() {
         editFormFieldModal = new EditFormFieldModal(),
         editGalleryImageModal = new EditGalleryImageModal(),
         editVideo = new EditVideoModal(),
-        pageSettingsModal = new PageSettingsModal
+        pageSettingsModal = new PageSettingsModal(),
+        editMenuModal = new EditMenuModal(),
+        editMenuItemModal = new EditMenuItemModal()
 
 }
 

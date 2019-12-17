@@ -32,7 +32,7 @@ body iframe#edit-frame[active] {
     display: block;
 }
 
-body iframe[mobile] {
+body iframe#edit-frame[mobile] {
     max-width: 500px;
 }
 

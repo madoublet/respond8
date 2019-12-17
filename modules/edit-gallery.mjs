@@ -16,13 +16,17 @@ export class EditGalleryModal {
               <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><g><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></g></svg>
             </a>
 
-            <h2>Images</h2>
+            <form>
+              <h2>Images</h2>
 
-            <div class="app-modal-list"></div>            
+              <button id="button-add-gallery-image" class="app-modal-add-button">Add Image</button>
+              
+              <div class="app-modal-list"></div>            
 
-            <button id="button-add-gallery-image" class="circle-button">
-                <i class="material-icons">add</i>
-            </button>
+              <div class="app-modal-actions">
+                <button type="submit">Update</button>
+              </div>
+            </form>
 
         </div>
         </section>`
@@ -38,6 +42,8 @@ export class EditGalleryModal {
 
         // setup private variables
         this.modal = document.querySelector('#edit-gallery-modal')
+        this.form = this.modal.querySelector('form')
+
         this.type = 'slideshow'
         
         // handle events
@@ -260,7 +266,6 @@ export class EditGalleryModal {
 
                 // remove and update
                 context.remove(index)
-                context.update()
                 context.updateList()
 
               }
@@ -276,8 +281,6 @@ export class EditGalleryModal {
           handle: '.drag-handle',
           onEnd: function (e) {
               context.move(e.oldIndex, e.newIndex)
-              context.update()
-              //context.updateList()
           },
 
       })
@@ -306,7 +309,6 @@ export class EditGalleryModal {
           context.images[data.detail.index] = data.detail.image
 
           // update
-          context.update()
           context.updateList()
           
         })
@@ -329,7 +331,18 @@ export class EditGalleryModal {
               context.toggleModal()
             }
 
-          })
+        })
+
+        // handle form submission
+        this.form.addEventListener('submit', function(e) {
+
+          e.preventDefault()
+
+          context.update()
+          context.toggleModal()
+
+          return false
+        })
 
         // add button
         document.querySelector('#button-add-gallery-image').addEventListener('click', function(e) { 
@@ -348,8 +361,9 @@ export class EditGalleryModal {
           context.images.push(image);
 
           // update ui
-          context.update()
           context.updateList()
+
+          e.preventDefault()
         })
 
     }
