@@ -117,22 +117,13 @@
 	"icon": "slideshow",
 	"html": "<div site-widget=\"slideshow\" role=\"list-box\" class=\"site-slideshow\"><div class=\"site-slideshow-image\"><img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTAwcHgiIGhlaWdodD0iNTAwcHgiIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHN0eWxlPSJiYWNrZ3JvdW5kOiAjODg4ODg4OyI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ5LjIgKDUxMTYwKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5EZXNrdG9wIENvcHkgODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJEZXNrdG9wLUNvcHktOCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZm9udC1mYW1pbHk9IkF2ZW5pck5leHQtUmVndWxhciwgQXZlbmlyIE5leHQiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSJub3JtYWwiPgogICAgICAgIDx0ZXh0IGlkPSJQbGFjZWhvbGRlciIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDx0c3BhbiB4PSIxMTkuMTI4IiB5PSIyNjUiPlBsYWNlaG9sZGVyPC90c3Bhbj4KICAgICAgICA8L3RleHQ+CiAgICA8L2c+Cjwvc3ZnPg==\"></div></div>"
 }, {
-	"type": "item",
-	"title": "Product Images",
-	"icon": "slideshow",
-	"html": "<div site-widget=\"product-images\" role=\"list-box\" class=\"site-product-images\"><div class=\"site-product-images-image\"><img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTAwcHgiIGhlaWdodD0iNTAwcHgiIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHN0eWxlPSJiYWNrZ3JvdW5kOiAjODg4ODg4OyI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ5LjIgKDUxMTYwKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5EZXNrdG9wIENvcHkgODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJEZXNrdG9wLUNvcHktOCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZm9udC1mYW1pbHk9IkF2ZW5pck5leHQtUmVndWxhciwgQXZlbmlyIE5leHQiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSJub3JtYWwiPgogICAgICAgIDx0ZXh0IGlkPSJQbGFjZWhvbGRlciIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDx0c3BhbiB4PSIxMTkuMTI4IiB5PSIyNjUiPlBsYWNlaG9sZGVyPC90c3Bhbj4KICAgICAgICA8L3RleHQ+CiAgICA8L2c+Cjwvc3ZnPg==\"></div></div>"
-}, {
 	"type": "separator",
-	"title": "E-Commerce"
+	"title": "Custom HTML"
 }, {
 	"type": "item",
-	"title": "Buy Now",
-	"icon": "attach_money",
-	"html": "<div site-widget=\"buy-now\"><button data-id=\"{{id}}\" data-sku=\"{{sku}}\" data-price=\"25\" data-type=\"buy-now\" class=\"purchase-button\" payment-buy-now>Buy Now</button></div>"
-}, {
-	"type": "item",
-	"title": "Subscribe",
-	"icon": "repeat",
-	"html": "<div site-widget=\"subscribe\"><button data-id=\"{{id}}\" data-sku=\"{{sku}}\" data-price=\"25\" data-type=\"subscribe\" class=\"purchase-button\" payment-subscribe>Subscribe</button></div>"
+	"title": "Component",
+	"icon": "widgets",
+	"html": "<div site-component=\"\"><p>Tap to select component</p></div>",
+	"isLayout": false
 }
 ]

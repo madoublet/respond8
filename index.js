@@ -11,7 +11,11 @@ const express = require('express'),
     bcrypt = require('bcrypt'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    common = require('./api/common.js')
+    common = require('./api/common.js'),
+    env = require('dotenv').config()
+
+
+console.log(`env = ${process.env.SMTP_USERNAME}`)
 
 // set app root
 global.appRoot = path.resolve(__dirname)
