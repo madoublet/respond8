@@ -5,6 +5,7 @@ const express = require('express'),
     image = require('./api/image'),
     file = require('./api/file'),
     menu = require('./api/menu'),
+    form = require('./api/form'),
     app = express(),
     port = 3000,
     path = require('path'),
@@ -14,11 +15,11 @@ const express = require('express'),
     common = require('./api/common.js'),
     env = require('dotenv').config()
 
-
-console.log(`env = ${process.env.SMTP_USERNAME}`)
-
 // set app root
 global.appRoot = path.resolve(__dirname)
+
+// publish site json
+common.publishSiteJSON()
 
 // setup passport (see https://github.com/passport/express-4.x-local-example/blob/master/server.js)
 passport.use(new LocalStrategy(
@@ -93,6 +94,7 @@ app.use('/api/page', page)
 app.use('/api/image', image)
 app.use('/api/file', file)
 app.use('/api/menu', menu)
+app.use('/api/form', form)
 
 app.get('/', (req, res) => res.send(`<html>
     <head><title>Welcome to Respond</title></head>

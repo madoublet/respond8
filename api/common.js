@@ -54,6 +54,25 @@ module.exports = {
     },
 
     /**
+     * Publishes site json
+     * @param {String} email
+     */
+    publishSiteJSON: function() {
+
+      let site = {}
+
+      site.id = process.env.SITE_ID
+      site.formSubmitApiUrl = process.env.FORM_SUBMIT_URL
+
+      // setup directories
+      fse.ensureDirSync(`${global.appRoot}/site/data/`)
+
+      // save JSON file
+      fs.writeFileSync(`${global.appRoot}/site/data/site.json`, JSON.stringify(site), 'utf8')
+
+    },
+
+    /**
      * Retrieves pages
      * @param {String} email
      */
@@ -66,16 +85,34 @@ module.exports = {
     },
 
     /**
+     * Retrieves a page for a given url
+     * @param {String} url
+     */
+    retrievePage: function(url) {
+      // get json
+      let json = fs.readFileSync(`${global.appRoot}/site/data/pages.json`, 'utf8'),
+      objs = JSON.parse(json)
+
+      for(let x=0; x<objs.length; x++) {
+        if(objs[x].url == url) {
+            return objs[x]
+        }
+      }
+
+      return null
+    },
+
+    /**
      * Publishes a page
      * @param {String} email
      */
-    publishPage: function(settings) {
+    publishPage: function(page) {
 
       let newPage = true,
           html = '',
           content = '',
           $ = null,
-          parts = settings.url.split('/'),
+          parts = page.url.split('/'),
           base = '',
           currentPage = null
 
@@ -94,27 +131,27 @@ module.exports = {
 
       // check to see if page exists
       for(let x=0; x<pages.length; x++) {
-          if(pages[x].url == settings.url) {
+          if(pages[x].url == page.url) {
               newPage = false
-              pages[x] = settings
-              currentPage = settings
+              pages[x] = page
+              currentPage = page
           }
       }
 
       if(newPage == true) {
 
-        currentPage = settings
+        currentPage = page
         
         // add page
-        pages.push(settings)
+        pages.push(page)
 
         // get default content from layouts 
-        content = fs.readFileSync(`${global.appRoot}/site/layouts/${settings.type}.html`, 'utf8')
+        content = fs.readFileSync(`${global.appRoot}/site/layouts/${page.type}.html`, 'utf8')
       }
       else {
 
         // get content from existing page
-        let temp = fs.readFileSync(`${global.appRoot}/site/${settings.url}`, 'utf8'),
+        let temp = fs.readFileSync(`${global.appRoot}/site/${page.url}`, 'utf8'),
             $ = cheerio.load(temp)
 
         // get content
@@ -122,23 +159,23 @@ module.exports = {
       }
 
       // retrieve template
-      html = fs.readFileSync(`${global.appRoot}/site/templates/${settings.template}.html`, 'utf8')
+      html = fs.readFileSync(`${global.appRoot}/site/templates/${page.template}.html`, 'utf8')
 
       // replace all meta data
       html = html.replace(/{{page.content}}/g, content)
-      html = html.replace(/{{page.title}}/g, settings.name)
-      html = html.replace(/{{page.name}}/g, settings.name)
-      html = html.replace(/{{page.url}}/g, settings.url)
-      html = html.replace(/{{page.description}}/g, settings.description)
-      html = html.replace(/{{page.keywords}}/g, settings.keywords)
-      html = html.replace(/{{page.tags}}/g, settings.tags)
-      html = html.replace(/{{page.image}}/g, settings.image)
-      html = html.replace(/{{page.location}}/g, settings.location)
-      html = html.replace(/{{page.language}}/g, settings.language)
-      html = html.replace(/{{page.direction}}/g, settings.direction)
-      html = html.replace(/{{page.firstName}}/g, settings.firstName)
-      html = html.replace(/{{page.lastName}}/g, settings.lastName)
-      html = html.replace(/{{page.lastModifiedBy}}/g, settings.firstName + ' ' + settings.lastName)
+      html = html.replace(/{{page.title}}/g, page.name)
+      html = html.replace(/{{page.name}}/g, page.name)
+      html = html.replace(/{{page.url}}/g, page.url)
+      html = html.replace(/{{page.description}}/g, page.description)
+      html = html.replace(/{{page.keywords}}/g, page.keywords)
+      html = html.replace(/{{page.tags}}/g, page.tags)
+      html = html.replace(/{{page.image}}/g, page.image)
+      html = html.replace(/{{page.location}}/g, page.location)
+      html = html.replace(/{{page.language}}/g, page.language)
+      html = html.replace(/{{page.direction}}/g, page.direction)
+      html = html.replace(/{{page.firstName}}/g, page.firstName)
+      html = html.replace(/{{page.lastName}}/g, page.lastName)
+      html = html.replace(/{{page.lastModifiedBy}}/g, page.firstName + ' ' + page.lastName)
       html = html.replace(/{{page.lastModifiedDate}}/g, (new Date()).toUTCString())
       html = html.replace(/{{page.customHeader}}/g, '')
       html = html.replace(/{{page.customFooter}}/g, '')
@@ -225,17 +262,17 @@ module.exports = {
       html = $.html()
 
       // get directory
-      let dir = settings.url.substring(0, settings.url.lastIndexOf("/")+1)
+      let dir = page.url.substring(0, page.url.lastIndexOf("/")+1)
 
       console.log('[debug] directory', `${global.appRoot}/site/${dir}`)
 
       // make sure it exists
       fse.ensureDirSync(`${global.appRoot}/site/${dir}`)
 
-      console.log('[debug] file', `${global.appRoot}/site/${settings.url}`)
+      console.log('[debug] file', `${global.appRoot}/site/${page.url}`)
 
       // save html file
-      fs.writeFileSync(`${global.appRoot}/site/${settings.url}`, html, 'utf8')
+      fs.writeFileSync(`${global.appRoot}/site/${page.url}`, html, 'utf8')
 
       // save json file
       fs.writeFileSync(`${global.appRoot}/site/data/pages.json`, JSON.stringify(pages), 'utf8')

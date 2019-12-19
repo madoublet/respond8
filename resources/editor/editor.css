@@ -50,7 +50,7 @@
 }
 
 /* components and widgets */
-body [role=main] [site-component] *, body [role=main] [site-widget] * {
+body [role=main] [site-widget] * {
   user-select: none;
   pointer-events: none;
 }
@@ -59,6 +59,29 @@ body [role=main] [site-component], body [role=main] [site-widget] {
   cursor: pointer;
 }
 
+body [role=main] [site-component], body [role=main] [site-widget] {
+  cursor: pointer;
+}
+
+
+/* components */
+body [role=main] [site-component=""] {
+  user-select: none;
+  border: 1px solid #ddd;
+  background-color: #f0f0f0;
+  color: #555;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;user-select: none;
+}
+
+body [role=main] [site-component] * {
+  user-select: none;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+}
 
 /* block */
 [editor-block] {

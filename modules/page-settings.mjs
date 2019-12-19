@@ -157,7 +157,7 @@ export class PageSettingsModal {
     }
 
     /*
-     * Setup events
+     * Fill page settings
      */
     fill() {
 

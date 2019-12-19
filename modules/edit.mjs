@@ -9,7 +9,7 @@ export class Edit {
     constructor() {
 
         this.frame = document.querySelector('#edit-frame')
-        this.page = '/index.html'
+        this.url = '/index.html'
         this.viewPage = document.querySelector('#view-page')
         this.viewMobile = document.querySelector('#view-mobile')
         this.viewSettings = document.querySelector('#view-settings')
@@ -18,10 +18,10 @@ export class Edit {
 
         const params = new URLSearchParams(window.location.search)
         
-        this.page = params.get('page') || '/index.html'
+        this.url = params.get('page') || '/index.html'
 
-        if(this.page != '') {
-            this.frame.src = `${this.page}?edit=true`
+        if(this.url != '') {
+            this.frame.src = `${this.url}?edit=true`
         }
 
         this.setupEvents()
@@ -35,7 +35,7 @@ export class Edit {
 
         let context = this;
 
-        this.viewPage.setAttribute('href', this.page)
+        this.viewPage.setAttribute('href', this.url)
         this.viewPage.setAttribute('target', '_blank')
 
         // view mobile
@@ -88,10 +88,13 @@ export class Edit {
      */
     save(html) {
 
+        // remove leading /
+        let url = (this.url[0] == '/') ? this.url.substr(1) : this.url
+
         // set data
         let data = {
             html: html,
-            page: this.page
+            url: url
         }
 
         // post form

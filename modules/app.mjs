@@ -19,6 +19,7 @@ import { EditVideoModal } from '/modules/edit-video.mjs'
 import { PageSettingsModal } from '/modules/page-settings.mjs'
 import { EditMenuModal } from '/modules/edit-menu.mjs'
 import { EditMenuItemModal } from '/modules/edit-menu-item.mjs'
+import { EditComponentModal } from '/modules/edit-component.mjs'
 
 // setup app
 let app = {}
@@ -48,8 +49,8 @@ app.setup = function() {
         editVideo = new EditVideoModal(),
         pageSettingsModal = new PageSettingsModal(),
         editMenuModal = new EditMenuModal(),
-        editMenuItemModal = new EditMenuItemModal()
-
+        editMenuItemModal = new EditMenuItemModal(),
+        editComponentModal = new EditComponentModal()
 }
 
 app.setup();

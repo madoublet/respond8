@@ -1,7 +1,13 @@
 const express = require('express'),
+    cors = require('cors'),
     router = express.Router(),
-    common = require('../common.js'),
     email = require('emailjs')
+
+
+var opts = {
+    origin: process.env.CORS_ORIGIN,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    }
 
 /**
   * /api/form/submit
@@ -9,7 +15,7 @@ const express = require('express'),
   * @param {Object} res - http://expressjs.com/api.html#res
   * @param {Object} next - required for middleware
   */
-router.post('/submit', async (req, res) => {
+router.post('/submit', cors(opts), async (req, res) => {
 
     let data = req.body
 

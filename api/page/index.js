@@ -21,7 +21,7 @@ router.post('/save', async (req, res) => {
 
     let body = req.body,
         content = body.html,
-        page = body.page,
+        url = body.url,
         template = 'default'
 
     console.log('[debug] save', req.body)
@@ -29,7 +29,7 @@ router.post('/save', async (req, res) => {
     try {
 
         // get existing page
-        let html = fs.readFileSync(`${global.appRoot}/site${page}`, 'utf8')
+        let html = fs.readFileSync(`${global.appRoot}/site/${url}`, 'utf8')
 
         // load html
         let $ = cheerio.load(html)
@@ -38,7 +38,17 @@ router.post('/save', async (req, res) => {
         $('[role="main"]').html(content)
 
         // save file
-        fs.writeFileSync(`${global.appRoot}/site${page}`, $.html(), 'utf8')
+        fs.writeFileSync(`${global.appRoot}/site/${url}`, $.html(), 'utf8')
+
+        // get page
+        let page = common.retrievePage(url)
+
+        console.log('[debug] page', page)
+
+        // publish page
+        if(page != null) {
+            common.publishPage(page)
+        }
         
         // send 200       
         res.status(200).send('Page saved successfully')
@@ -133,6 +143,58 @@ router.post('/save', async (req, res) => {
     catch(e) {
         console.log(e)
         res.status(400).send('There was an error listing the templates')
+    }
+
+})
+
+/**
+  * /api/page/components/list
+  * @param {Object} req - http://expressjs.com/api.html#req
+  * @param {Object} res - http://expressjs.com/api.html#res
+  * @param {Object} next - required for middleware
+  */
+ router.post('/components/list', async (req, res) => {
+
+    // auth
+    if(!req.user) {
+        res.status(400).send('Not authenticated')
+        return
+    }
+
+    let body = req.body
+
+    console.log('[debug] list components', req.body)
+
+    try {
+
+        let files = fs.readdirSync(`${global.appRoot}/site/components/`), arr = []
+
+        for(let x=0; x<files.length; x++) {
+
+            // get stats for file
+            let stats = fs.statSync(`${global.appRoot}/site/components/${files[x]}`),
+                ext = path.extname(`${global.appRoot}/site/components/${files[x]}`),
+                component = ''
+
+            if(stats.isFile()) {
+
+                // check for image
+                if(ext == '.html') {
+                    component = files[x].replace('.html', '')
+
+                    arr.push(component)
+                }
+            }
+        }
+        
+        // send 200       
+        res.setHeader('Content-Type', 'application/json')
+        res.status(200).send(arr)
+
+    }
+    catch(e) {
+        console.log(e)
+        res.status(400).send('There was an error listing the components')
     }
 
 })
