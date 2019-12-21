@@ -53,6 +53,77 @@ module.exports = {
 
     },
 
+    // generate an id for the new sku
+    makeid: function(length) {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    
+      for (var i = 0; i < length; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    
+      return text;
+    },
+
+    /**
+     * Creates a reset token for a given email
+     * @param {String} email
+     */
+    createResetTokenForUser: function(email, token) {
+
+      try{
+        let json = fs.readFileSync(`${global.appRoot}/data/site.json`, 'utf8'),
+            obj = JSON.parse(json)
+
+        for(let x=0; x<obj.users.length; x++) {
+          if(obj.users[x].email == email) {
+            obj.users[x].token = token
+
+            fs.writeFileSync(`${global.appRoot}/data/site.json`, JSON.stringify(obj), 'utf8')
+
+            return token
+          }
+        }
+
+      }
+      catch(e) {
+        console.log(e)
+        return null
+      }
+
+    },
+
+    /**
+     * Creates a reset token for a given email
+     * @param {String} email
+     */
+    updatePassword: function(email, hash) {
+
+      try{
+        let json = fs.readFileSync(`${global.appRoot}/data/site.json`, 'utf8'),
+            obj = JSON.parse(json)
+
+        for(let x=0; x<obj.users.length; x++) {
+          if(obj.users[x].email == email) {
+
+            // clear token
+            delete obj.users[x].token
+
+            // update password
+            obj.users[x].password = hash
+            
+            // update file
+            fs.writeFileSync(`${global.appRoot}/data/site.json`, JSON.stringify(obj), 'utf8')
+          }
+        }
+
+      }
+      catch(e) {
+        console.log(e)
+        return null
+      }
+
+    },
+
     /**
      * Publishes site json
      * @param {String} email

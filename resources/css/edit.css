@@ -221,6 +221,7 @@ body .site-toast {
   border-radius: 25px;
   cursor: pointer;
   text-align: center;
+  font-size: 13px;
 }
 
 body .site-toast .loading-icon {

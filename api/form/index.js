@@ -1,7 +1,7 @@
 const express = require('express'),
     cors = require('cors'),
     router = express.Router(),
-    email = require('emailjs')
+    emailjs = require('emailjs')
 
 
 var opts = {
@@ -39,7 +39,7 @@ router.post('/submit', cors(opts), async (req, res) => {
         html += '</table>'
 
         // connect to server, #ref: https://www.npmjs.com/package/emailjs
-        var server  = email.server.connect({
+        var server  = emailjs.server.connect({
             user: process.env.SMTP_USERNAME, 
             password: process.env.SMTP_PASSWORD, 
             host: process.env.SMTP_HOST, 

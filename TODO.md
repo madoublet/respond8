@@ -1,2 +1,4 @@
 # TODO before beta
-- Forgot / reset flow
+- Update colors on create flow
+- Remove alerts
+- Remove unnecessary console.logs

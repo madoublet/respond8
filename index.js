@@ -6,6 +6,7 @@ const express = require('express'),
     file = require('./api/file'),
     menu = require('./api/menu'),
     form = require('./api/form'),
+    user = require('./api/user'),
     app = express(),
     port = 3000,
     path = require('path'),
@@ -25,12 +26,8 @@ common.publishSiteJSON()
 passport.use(new LocalStrategy(
     function(username, password, done) {
 
-        console.log(`LocalStrategy username=${username} and password=${password}`)
-
         let email = username,
             user = common.findUser(email)
-
-        console.log(user)
 
         if(user == null) return done(null, false, { message: 'Incorrect username' })
         else {
@@ -60,7 +57,7 @@ app.use(passport.session());
 // handle login post
 app.post('/login',
   passport.authenticate('local', { successRedirect: '/edit?page=/index.html',
-                                   failureRedirect: '/login?error' }));
+                                   failureRedirect: '/login?error=true' }));
 
 // setup public ui routes
 app.use('/', express.static('site'))
@@ -68,13 +65,12 @@ app.use('/modules', express.static('modules'))
 app.use('/setup', express.static('views/setup'))
 app.use('/select', express.static('views/select'))
 app.use('/login', express.static('views/login'))
+app.use('/forgot', express.static('views/forgot'))
+app.use('/reset', express.static('views/reset'))
 app.use('/resources', express.static('resources'))
 
 // authenticate 
 var auth = function (req, res, next) {
-
-    console.log('auth', req.isAuthenticated())
-
     if(req.isAuthenticated())next()
     else res.redirect('/login')
 }
@@ -95,6 +91,7 @@ app.use('/api/image', image)
 app.use('/api/file', file)
 app.use('/api/menu', menu)
 app.use('/api/form', form)
+app.use('/api/user', user)
 
 app.get('/', (req, res) => res.send(`<html>
     <head><title>Welcome to Respond</title></head>
@@ -107,4 +104,4 @@ app.get('/', (req, res) => res.send(`<html>
     </body>
 </html>`))
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Respond app listening on port ${port}!`))

@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <title>Login - Respond</title>
+    <title>Forgot Password - Respond</title>
 
     <!-- meta -->
     <meta charset="utf-8">
@@ -29,18 +29,15 @@
     </header>
     
     <main>
-        <form action="/login" method="post">
+        <h2>Recover Password</h2>
+        <p>Enter your email to receive a reset link via email.</p>
+        <form>
             <div>
                 <label>Email</label>
-                <input type="text" name="username" required>
-            </div>
-            <div>
-                <label>Password</label>
-                <input type="password" name="password" required>
+                <input id="forgot-email" type="text" name="forgot-email" required>
             </div>
             <div class="actions">
-                <a href="/forgot">Recover Password</a>
-                <input type="submit" value="Log In"/>
+                <input type="submit" value="Recover Password"/>
             </div>
         </form>
     </main>
@@ -48,7 +45,7 @@
 </body>
 
 <script src="/resources/js/shared.js"></script>
-<script src="/resources/js/login.js"></script>
+<script src="/resources/js/forgot.js"></script>
 
 
 </html>

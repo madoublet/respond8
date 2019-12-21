@@ -65,7 +65,7 @@ shared.sendAdd = function(obj) {
             current = document.querySelector('.site-toast')
 
             if(current == null) {
-                current = toast.setup()
+                current = shared.toast.setup()
             }
 
             current.removeAttribute('success')
