@@ -24,6 +24,7 @@ body h4,
 body h5,
 body p,
 body blockquote,
+body pre,
 body li,
 body a,
 body input,
@@ -90,5 +91,17 @@ body h5 {
 }
 
 body p {
+    line-height: 25px;
+}
+
+body blockquote {
+    border-left: 2px solid #ddd;
+    padding-left: 20px;
+    line-height: 25px;
+}
+
+body pre {
+    border: 2px solid #ddd;
+    padding: 20px;
     line-height: 25px;
 }
