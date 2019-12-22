@@ -74,7 +74,7 @@ export class ContentSlider {
             
             }
             else {
-                alert('retrieve error')
+                // page list error
             }
         }
     }

@@ -162,6 +162,8 @@ export class EditMenuModal {
         html: this.buildHTML()
       }
 
+      shared.toast.show('loading', 'Saving menu...', false)
+
       // post update
       var xhr = new XMLHttpRequest()
       xhr.open('POST', '/api/menu/save', true)
@@ -170,11 +172,12 @@ export class EditMenuModal {
 
       xhr.onload = function() {
           if (xhr.status >= 200 && xhr.status < 400) {
+              shared.toast.show('success', 'Menu updated successfully!', true)
               context.updateList()
               context.toggleModal()
           }
           else {
-              alert('update error')
+              shared.toast.show('failure', 'There was an error updating the menu', true)
           }
       }
       // end xhr
@@ -196,7 +199,7 @@ export class EditMenuModal {
                 type: this.type
               }
 
-        // post form
+        // retrieve menu
         var xhr = new XMLHttpRequest()
         xhr.open('POST', '/api/menu/retrieve', true)
         xhr.setRequestHeader('Content-Type', 'application/json')
@@ -208,7 +211,7 @@ export class EditMenuModal {
                 context.updateList()
             }
             else {
-                alert('retrieve error')
+                // error retrieving menu
             }
         }
         // end xhr

@@ -111,7 +111,7 @@ export class AddElementModal {
               
           }
           else {
-              alert('retrieve error')
+              
           }
       }
       // end xhr

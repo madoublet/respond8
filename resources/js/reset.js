@@ -24,14 +24,14 @@ class Reset {
             }
             else {
 
-                shared.toast.show('loading', 'Updating password...', false)
-
                 let data = {
                     email: email,
                     token: token,
                     password: password
                 },
                 context = this
+
+                shared.toast.show('loading', 'Updating password...', false)
 
                 // post form
                 var xhr = new XMLHttpRequest()

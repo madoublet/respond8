@@ -59,7 +59,7 @@ export class EditComponentModal {
     setup() {
       let data = {},
             context = this
-      
+
       // post form
       var xhr = new XMLHttpRequest()
       xhr.open('POST', '/api/page/components/list', true)

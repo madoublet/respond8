@@ -127,6 +127,7 @@ export class PageSettingsModal {
      * Setup the data
      */
     setup() {
+
       let data = {},
             context = this
       
@@ -264,11 +265,11 @@ export class PageSettingsModal {
 
       xhr.onload = function() {
           if (xhr.status >= 200 && xhr.status < 400) {
-              shared.toast.show('success', 'Settings updated!', true)
+              shared.toast.show('success', 'Settings updated successfully!', true)
               context.toggleModal()
           }
           else {
-              shared.toast.show('failure', 'There was an error saving the file', true)
+              shared.toast.show('failure', 'There was an error updating the settings.', true)
           }
       }
       // end xhr

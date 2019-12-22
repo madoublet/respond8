@@ -97,6 +97,8 @@ export class Edit {
             url: url
         }
 
+        shared.toast.show('loading', 'Saving page...', false)
+
         // post form
         var xhr = new XMLHttpRequest()
         xhr.open('POST', '/api/page/save', true)
@@ -105,11 +107,11 @@ export class Edit {
 
         xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 400) {
-                shared.toast.show('success', 'Saved!', true)
+                shared.toast.show('success', 'Page saved successfully!', true)
                 location.reload()
             }
             else {
-                shared.toast.show('failure', 'There was an error saving the file', true)
+                shared.toast.show('failure', 'There was an error saving the page', true)
             }
         }
     }

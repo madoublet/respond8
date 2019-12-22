@@ -158,17 +158,17 @@ export class AddPageModal {
             }, 
             context = this
 
+        shared.toast.show('loading', 'Adding page...', false)
+
         // post form
         var xhr = new XMLHttpRequest()
         xhr.open('POST', '/api/page/add', true)
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(JSON.stringify(data))
 
-        shared.toast.show('loading', 'Adding page...', false)
-
         xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 400) {
-                shared.toast.show('success', 'Saved!', true)
+                shared.toast.show('success', 'Page added successfully!', true)
                 location.href = `/edit?page=/${data.url}.html`
             }
             else {
